@@ -11,6 +11,9 @@ var connection = require('../config/connection.js');
 //5. but to add project for a specific user (pop up modal)
 //be able to create an event for the users.
 
+//make sure when the user loggs in that they only see there stuff
+//when an admin uploads an image have a drop down menu for each client and when that client id is selected have it posted to their profile page
+
 
 //this is the users_controller.js file
 router.get('/', function(req,res) {
@@ -25,38 +28,12 @@ router.get('/', function(req,res) {
 	});
 });
 
-router.get('/user/:id/profile', function(req, res){
-  var user = req.session.id
-  var targetUser = User.find({userId: req.params.id})
-  if(req.session.user_id === targetUser.id) {
-     res.render('user_profile', {data: data});
-  } else {
-     res.redirect('signIn');
-  }
-});
-
-// router.get('/profile/:id', function(req, res){
-//
-//   var queryString = "select * from users "
-//   queryString += "where users.id = " + req.params.id;
-//   console.log('this is query', queryString)
-//   connection.query(queryString, function(err, users) {
-//       if (err) throw err;
-// 			console.log('this is users', users);
-//       //uncomment this to see what the data gets returned like
-//       // res.send(users)
-// 			// res.redirect('profile/:id')
-//       res.render('users/show', {users: users})
-//
-//   });
-// });
-
 router.get('/new', function(req,res) {
 	res.render('users/new');
 });
 
 router.get('/', function(req,res) {
-	res.render('sign_in');
+	res.render('users/sign_in');
 });
 
 router.get('/newAdmin', function(req,res) {
@@ -68,19 +45,48 @@ router.get('/newClient', function(req,res) {
 });
 
 
+router.get('/:id/profile', function(req, res){
+	var hbsObject = {
+		logged_in: req.session.logged_in,
+		superAdmin: req.session.superAdmin,
+		regAdmin: req.session.regAdmin,
+		client: req.session.client
+	}
+
+	var id = req.params.id;
+
+	var condition = "id = '" + id + "'";
+
+	user.findOne(condition, function(user){
+		console.log("this is the user log", user.id);
+//this is not working because it always thinks that the param id is equal to the id that i am logged into
+		if (user){
+			req.session.logged_in = true;
+			if (req.session.user_id === user.id) {
+				res.render('users/profile', hbsObject);
+			} else {
+				res.send('fuck this shit...');
+			}
+		}else{
+			res.send('idk why this is here')
+		}
+	});
+
+});
+
 
 router.get('/sign-out', function(req,res) {
   req.session.destroy(function(err) {
-		console.log('destroying sesssh', req.session);
-		console.log('destroying sesssh fff', req.session.destroy);
      res.redirect('/')
   })
 });
 
 //if user trys to sign in with the wrong password or email tell them that on the page
+// when an admin uploads a picture it will have an id attached to it which will be equal to the client id.
+//once we know if it's equal to a client id it will go to that specific client
+//client will be able to comment with a checkbox that it is completed. 
 router.post('/login', function(req, res) {
 	var email = req.body.email;
-
 	var condition = "email = '" + email + "'";
 
 	user.findOne(condition, function(user){
@@ -93,22 +99,16 @@ router.post('/login', function(req, res) {
 						req.session.user_id = user.id;
 						req.session.user_email = user.email;
 
-						// console.log('This is client - ', req.session.superAdmin);
 						if (user.role == 'superAdmin') {
 							req.session.superAdmin = true;
-							console.log(req.session.superAdmin);
-							// console.log('This is admin - ', req.session.superAdmin);
 						} else if (user.role == 'admin') {
 							req.session.regAdmin = true;
-							console.log(req.session.regAdmin);
-							// console.log('This is admin - ', req.session.reqAdmin);
 						} else if (user.role == 'client') {
 							req.session.client = true;
-							console.log(req.session.client);
-
 						}
-						res.redirect('/');
-						// res.redirect('/profile/:id')
+						console.log('this is the req.session.user_id in login route', req.session.user_id);
+						console.log('this is the find one userid in login route', user.id);
+						res.redirect("/");
 					}else{
             res.send('You put in the wrong password.')
           }
@@ -141,8 +141,6 @@ router.post('/create', function(req,res) {
                 req.session.user_email = req.body.email; //we need to grab the email from the form because we don't get it back from MySQL. If we wanted to grab it, then we'd have to do another sql query but it's unnecessary since we already have it here.
                 req.session.logged_in = true;
                 req.session.user_id = user.insertId; //the MySQL npm package returns the id of the record inserted with a key of insertId.
-								console.log('req.body.role', req.body.role);
-								console.log('req.body.role', superAdmin);
                 res.redirect('/');
             	});
 						});
@@ -214,3 +212,44 @@ router.post('/createClient', function(req,res) {
 });
 
 module.exports = router;
+
+
+// req.session.userid
+// var condition = "id = '" + req.session.user_id + "'";
+// var targetUser = user.findOne(condition, function(user){
+
+//
+// 	if(req.session.user_id === targetUser) {
+// 		res.render('users/profile', hbsObject);
+
+// 	} else {
+// 		res.redirect('users/sign_in');
+
+// 	}
+// var user = req.session.user_id;
+	//
+// var targetUser =
+// var targetUser = user.findOne(	{user_id: req.params.id});
+// if(req.session.user_id === targetUser.id) {
+//    res.render('user_profile', {data: data});
+// } else {
+//    res.render('sign_in');
+// }
+
+
+					// 	req.session.logged_in = true;
+					// 	req.session.user_id = user.id;
+					// 	req.session.user_email = user.email;
+					//
+					// 	if (user.role == 'superAdmin') {
+					// 		req.session.superAdmin = true;
+					// 	} else if (user.role == 'admin') {
+					// 		req.session.regAdmin = true;
+					// 	} else if (user.role == 'client') {
+					// 		req.session.client = true;
+					// 	}
+					//
+					// 	res.redirect("/");
+					// }else{
+					// 	res.send('You put in the wrong password.')
+					// }
