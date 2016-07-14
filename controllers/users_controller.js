@@ -11,8 +11,13 @@ var connection = require('../config/connection.js');
 //5. but to add project for a specific user (pop up modal)
 //be able to create an event for the users.
 
-//make sure when the user loggs in that they only see there stuff
-//when an admin uploads an image have a drop down menu for each client and when that client id is selected have it posted to their profile page
+//"make sure when the user loggs in that they only see there stuff"
+//"when an admin uploads an image have a drop down menu for each client and when that client id is selected have it posted to their profile page"
+//"check the cats app on why it's not passing to the profile page"
+//if user trys to sign in with the wrong password or email tell them that on the page
+// when an admin uploads a picture it will have an id attached to it which will be equal to the client id.
+//once we know if it's equal to a client id it will go to that specific client
+//client will be able to comment with a checkbox that it is completed.
 
 
 //this is the users_controller.js file
@@ -63,7 +68,7 @@ router.get('/:id/profile', function(req, res){
 		if (user){
 			req.session.logged_in = true;
 			if (req.session.user_id === user.id) {
-				res.render('users/profile', hbsObject);
+				res.render('users/profile', hbsObject); //try this later {user:user, hbsObject}
 			} else {
 				res.send('fuck this shit...');
 			}
@@ -81,10 +86,6 @@ router.get('/sign-out', function(req,res) {
   })
 });
 
-//if user trys to sign in with the wrong password or email tell them that on the page
-// when an admin uploads a picture it will have an id attached to it which will be equal to the client id.
-//once we know if it's equal to a client id it will go to that specific client
-//client will be able to comment with a checkbox that it is completed. 
 router.post('/login', function(req, res) {
 	var email = req.body.email;
 	var condition = "email = '" + email + "'";
@@ -212,44 +213,3 @@ router.post('/createClient', function(req,res) {
 });
 
 module.exports = router;
-
-
-// req.session.userid
-// var condition = "id = '" + req.session.user_id + "'";
-// var targetUser = user.findOne(condition, function(user){
-
-//
-// 	if(req.session.user_id === targetUser) {
-// 		res.render('users/profile', hbsObject);
-
-// 	} else {
-// 		res.redirect('users/sign_in');
-
-// 	}
-// var user = req.session.user_id;
-	//
-// var targetUser =
-// var targetUser = user.findOne(	{user_id: req.params.id});
-// if(req.session.user_id === targetUser.id) {
-//    res.render('user_profile', {data: data});
-// } else {
-//    res.render('sign_in');
-// }
-
-
-					// 	req.session.logged_in = true;
-					// 	req.session.user_id = user.id;
-					// 	req.session.user_email = user.email;
-					//
-					// 	if (user.role == 'superAdmin') {
-					// 		req.session.superAdmin = true;
-					// 	} else if (user.role == 'admin') {
-					// 		req.session.regAdmin = true;
-					// 	} else if (user.role == 'client') {
-					// 		req.session.client = true;
-					// 	}
-					//
-					// 	res.redirect("/");
-					// }else{
-					// 	res.send('You put in the wrong password.')
-					// }
