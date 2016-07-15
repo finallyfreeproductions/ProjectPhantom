@@ -1,6 +1,13 @@
+//bcrypt is used to hash the password as it goes into the database;
 var bcrypt = require('bcryptjs');
 var express = require('express');
 var router = express.Router();
+//lines 5 and 6 is used for uploading images;
+var multer = require('multer');
+var upload = multer({ dest: './public/images' })
+//line 9 and 10 will be used for mongodb
+var mongo = require('mongodb');
+var db = require('monk')('localhost/projectphantom');
 var user = require('../models/user.js');
 var connection = require('../config/connection.js');
 
@@ -49,25 +56,73 @@ router.get('/newClient', function(req,res) {
 	res.render('users/newClient');
 });
 
+router.get('/addimagetest', function(req, res, next) {
+	var posts = db.get('posts');
+
+	posts.find({},{},function(err, posts){
+		console.log('this is the long for what posts exactly is because i am not sure', posts);
+		res.render('users/profile',{
+  			'title': 'Add Post',
+  			'posts': posts
+  		});
+	});
+});
+
+router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
+  // Get Form Values
+  var title = req.body.title;
+  var date = new Date();
+
+  // Check Image Upload
+  if(req.file){
+  	var mainimage = req.file.filename;
+  } else {
+  	var mainimage = 'noimage.jpg';
+  }
+  	// Form Validation
+	req.checkBody('title','Title field is required').notEmpty();
+
+	// Check Errors
+	var errors = req.validationErrors();
+	if(errors){
+		res.render('users/sign_in',{
+			"errors": errors
+		});
+
+	} else {
+		var posts = db.get('posts');
+		posts.insert({
+			"title": title,
+			"mainimage": mainimage
+		}, function(err, post){
+			if(err){
+				res.send(err);
+			} else {
+				res.redirect('/');
+			}
+		});
+	}
+});
 
 router.get('/:id/profile', function(req, res){
-	var hbsObject = {
-		logged_in: req.session.logged_in,
-		superAdmin: req.session.superAdmin,
-		regAdmin: req.session.regAdmin,
-		client: req.session.client
-	}
 
 	var id = req.params.id;
 
 	var condition = "id = '" + id + "'";
 
 	user.findOne(condition, function(user){
-		console.log("this is the user log", user.id);
+		var hbsObject = {
+			logged_in: req.session.logged_in,
+			superAdmin: req.session.superAdmin,
+			regAdmin: req.session.regAdmin,
+			client: req.session.client,
+			user: user
+		}
 //this is not working because it always thinks that the param id is equal to the id that i am logged into
 		if (user){
 			req.session.logged_in = true;
 			if (req.session.user_id === user.id) {
+
 				res.render('users/profile', hbsObject); //try this later {user:user, hbsObject}
 			} else {
 				res.send('fuck this shit...');
@@ -79,6 +134,7 @@ router.get('/:id/profile', function(req, res){
 
 });
 
+//add image goes here.
 
 router.get('/sign-out', function(req,res) {
   req.session.destroy(function(err) {

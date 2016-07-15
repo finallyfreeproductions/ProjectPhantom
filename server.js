@@ -2,6 +2,14 @@
 Here is where you set up your server file.
 express middleware.
 */
+
+//this is for testing beginning
+var multer = require('multer');
+var upload = multer({ dest: 'uploads/' })
+var expressValidator = require('express-validator');
+var mongo = require('mongodb');
+var db = require('monk')('localhost/projectphantom');
+//7-12 testing ends here.
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var express = require('express');
@@ -13,6 +21,25 @@ var app = express();
 //allow sessions
 app.use(session({ secret: 'app', cookie: { maxAge: 60000 }}));
 app.use(cookieParser());
+
+//testing is below this
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
+//testing is above this and ends here
 
 //Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static(process.cwd() + '/public'));
