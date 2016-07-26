@@ -64,7 +64,7 @@ app.use('/', users_controller);
 // app.use('/users', users_controller);
 app.use('/users', users_controller);
 
-var PORT = 3002
+var PORT = 3000
 app.listen(PORT, function() {
   console.log('This app is running on port ' + PORT);
 });
