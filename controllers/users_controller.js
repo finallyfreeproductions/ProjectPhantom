@@ -11,6 +11,7 @@ var db = require('monk')('localhost/projectphantom');
 var user = require('../models/user.js');
 var image = require('../models/image.js');
 var connection = require('../config/connection.js');
+var bodyParser = require('body-parser');
 
 // create an admin area where the form will be. And connect it with a hidden drop down menu of numbers which will be the same number as the id of the client that you are working on... so it will be the image that will have a title and a dropdown menu in an admin area. and under each image will add comments.
 
@@ -56,12 +57,6 @@ router.get('/newClient', function(req,res) {
 });
 
 router.get('/adminarea', function(req,res){
-	var hbsObject = {
-		logged_in: req.session.logged_in,
-		superAdmin: req.session.superAdmin,
-		regAdmin: req.session.regAdmin,
-		client: req.session.client
-	}
 
 	var posts = db.get('posts');
 	posts.find({},{},function(err, posts){
@@ -69,32 +64,27 @@ router.get('/adminarea', function(req,res){
 		// if theyre equal only grab the client name that is equal to it.
 		// check out the nodeblog for when we searh by category only those show up.
 
-		console.log('after find user_email', req.session.user_email);
-		console.log(posts);
-
 		res.render('users/adminArea',{
   			"title": 'Add Post',
-  			"posts": posts,
-				"hbsObject":hbsObject
+				"logged_in": req.session.logged_in,
+				"superAdmin": req.session.superAdmin,
+				"regAdmin": req.session.regAdmin,
+				"client": req.session.client,
+  			"posts": posts
   		});
 	});
 });
 
-router.post('/commentimage', upload.single('mainimage'), function(req, res, next) {
+router.post('/addcomment', upload.single('mainimage'), function(req, res, next) {
   // Get Form Values
-	var comments = db.get('comments');
-  var title = req.body.title;
-	var client = req.body.client;
+	var posts = db.get('posts');
+  var name = req.body.name;
+	var body = req.body.body;
   var date = new Date();
 
-  // Check Image Upload
-  if(req.file){
-  	var mainimage = req.file.filename;
-  } else {
-  	var mainimage = 'noimage.jpg';
-  }
   	// Form Validation
-	req.checkBody('title','Title field is required').notEmpty();
+	req.checkBody('name','name field is required').notEmpty();
+	req.checkBody('body','body field is required').notEmpty();
 
 	// Check Errors
 	var errors = req.validationErrors();
@@ -104,10 +94,10 @@ router.post('/commentimage', upload.single('mainimage'), function(req, res, next
 		});
 
 	} else {
-		var comments = db.get('comments');
-		comments.insert({
-			"title": title,
-			"client": client
+		var posts = db.get('posts');
+		posts.insert({
+			"name": name,
+			"body": body
 		}, function(err, post){
 			if(err){
 				res.send(err);
@@ -118,7 +108,6 @@ router.post('/commentimage', upload.single('mainimage'), function(req, res, next
 	}
 });
 
-//below this is the working image upload to mongo but now i need to transfer it over to mysql
 router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
   // Get Form Values
 	var posts = db.get('posts');
@@ -218,7 +207,7 @@ router.post('/login', function(req, res) {
 							req.session.client = true;
 						}
 						// res.redirect("/profile/6");
-						res.redirect("/");
+						res.redirect("/adminarea");
 					}else{
             res.send('You put in the wrong password.')
           }
