@@ -77,10 +77,11 @@ router.get('/adminarea', function(req,res){
 
 router.post('/addcomment', upload.single('mainimage'), function(req, res, next) {
   // Get Form Values
-	var posts = db.get('posts');
+	// var posts = db.get('posts');
   var name = req.body.name;
 	var body = req.body.body;
-  var date = new Date();
+	var postid= req.body.postid;
+  var commentdate = new Date();
 
   	// Form Validation
 	req.checkBody('name','name field is required').notEmpty();
@@ -89,19 +90,38 @@ router.post('/addcomment', upload.single('mainimage'), function(req, res, next) 
 	// Check Errors
 	var errors = req.validationErrors();
 	if(errors){
-		res.render('users/sign_in',{
-			"errors": errors
-		});
-
-	} else {
 		var posts = db.get('posts');
-		posts.insert({
+		posts.findById(postid, function(err, post){
+			res.render('show',{
+				"errors": errors,
+				"post": post
+			});
+		});
+		console.log('error log on line 100 with the posts.findbyid');
+	} else {
+		var comment = {
 			"name": name,
-			"body": body
-		}, function(err, post){
+			"body": body,
+			"commentdate": commentdate
+		}
+
+		var posts = db.get('posts');
+		console.log('this is the comment log', comment);
+		posts.update({
+			"_id": postid
+		},{
+			$push:{
+				"comments": comment
+			}
+		}, function(err, doc){
+			console.log('made it here before 119 error');
 			if(err){
-				res.send(err);
+				console.log('made it here after line 116 if error statement');
+				throw err;
 			} else {
+				console.log('made it here before redirect');
+				// req.flash('success', 'Comment Added');
+				// res.location('/posts/show/'+postid);
 				res.redirect('/adminarea');
 			}
 		});

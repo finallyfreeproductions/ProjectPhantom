@@ -8,9 +8,12 @@
 <ul style="list-style-type:none">
   <li>{{this.title}}</li>
   <li><img style='width:15%;'src="images/{{this.mainimage}}" alt="" /></li>
+<!-- need to add in loop here to go over each one and use this.body -->
+  <li>{{this.comments.0.body}}</li>
+
 </ul>
 <form method='post', action='/users/addcomment', enctype="multipart/form-data">
-  <input name='postid', type='hidden', value='#{post._id}'>
+  <input name='postid', type='hidden', value='{{this._id}}'>
   <div class="form-group">
     <label for="em">name:</label>
     <input type="text" id="name" name="name" placeholder="Enter name">
