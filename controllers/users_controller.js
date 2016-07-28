@@ -31,7 +31,6 @@ var bodyParser = require('body-parser');
 //client will be able to comment with a checkbox that it is completed.
 
 
-//this is the users_controller.js file
 router.get('/', function(req,res) {
 	user.all(function(data){ //grabbing .all users from the models file
 		var hbsObject = {
@@ -57,34 +56,40 @@ router.get('/newClient', function(req,res) {
 });
 
 router.get('/adminarea', function(req,res){
+//i have to figure out the best way for the client to see their own image.
+		var posts = db.get('posts');
+		posts.find({},{},function(err, posts){
+			// if client name is equal to req.session.user_email = user.email;
+			// if theyre equal only grab the client name that is equal to it.
+			// check out the nodeblog for when we searh by category only those show up.
+			// req.session.logged_in = true;
+			// if (req.session.superAdmin) {
 
-	var posts = db.get('posts');
-	posts.find({},{},function(err, posts){
-		// if client name is equal to req.session.user_email = user.email;
-		// if theyre equal only grab the client name that is equal to it.
-		// check out the nodeblog for when we searh by category only those show up.
+				res.render('users/adminArea',{
+		  			"title": 'Add Post',
+						"logged_in": req.session.logged_in,
+						"superAdmin": req.session.superAdmin,
+						"regAdmin": req.session.regAdmin,
+						"client": req.session.client,
+		  			"posts": posts
+		  		});
+			// } else {
+				// res.send('You do not belong here');
+			// }
 
-		res.render('users/adminArea',{
-  			"title": 'Add Post',
-				"logged_in": req.session.logged_in,
-				"superAdmin": req.session.superAdmin,
-				"regAdmin": req.session.regAdmin,
-				"client": req.session.client,
-  			"posts": posts
-  		});
-	});
+		});
+
 });
 
 router.post('/addcomment', upload.single('mainimage'), function(req, res, next) {
   // Get Form Values
 	// var posts = db.get('posts');
-  var name = req.body.name;
 	var body = req.body.body;
 	var postid= req.body.postid;
   var commentdate = new Date();
 
   	// Form Validation
-	req.checkBody('name','name field is required').notEmpty();
+
 	req.checkBody('body','body field is required').notEmpty();
 
 	// Check Errors
@@ -97,16 +102,12 @@ router.post('/addcomment', upload.single('mainimage'), function(req, res, next) 
 				"post": post
 			});
 		});
-		console.log('error log on line 100 with the posts.findbyid');
 	} else {
 		var comment = {
-			"name": name,
 			"body": body,
 			"commentdate": commentdate
 		}
-
 		var posts = db.get('posts');
-		console.log('this is the comment log', comment);
 		posts.update({
 			"_id": postid
 		},{
@@ -114,14 +115,9 @@ router.post('/addcomment', upload.single('mainimage'), function(req, res, next) 
 				"comments": comment
 			}
 		}, function(err, doc){
-			console.log('made it here before 119 error');
 			if(err){
-				console.log('made it here after line 116 if error statement');
 				throw err;
 			} else {
-				console.log('made it here before redirect');
-				// req.flash('success', 'Comment Added');
-				// res.location('/posts/show/'+postid);
 				res.redirect('/adminarea');
 			}
 		});
@@ -170,34 +166,6 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
 //THIS IS THE END OF WORKING IMAGE UPLOAD IN MONGO
 // create an admin area where the form will be. And connect it with a hidden drop down menu of numbers which will be the same number as the id of the client that you are working on... so it will be the image that will have a title and a dropdown menu in an admin area. and under each image will add comments.
 // now that i am working out of admin area. Try and get images and comments transfered over to there and get it to work that way for tomorrow.
-
-router.get('/profile/:id', function(req, res){
-	var id = req.params.id;
-
-	var condition = "id = '" + id + "'";
-
-	user.findOne(condition, function(user){
-		var hbsObject = {
-			logged_in: req.session.logged_in,
-			superAdmin: req.session.superAdmin,
-			regAdmin: req.session.regAdmin,
-			client: req.session.client,
-			user: user,
-		}
-		if (user){
-			req.session.logged_in = true;
-			if (req.session.user_id === user.id) {
-
-				res.render('users/profile', hbsObject);
-			} else {
-				res.send('You do not belong here');
-			}
-		}else{
-			res.send('========= line ____ in users_controller file')
-		}
-	});
-
-});
 
 router.get('/sign-out', function(req,res) {
   req.session.destroy(function(err) {
@@ -332,115 +300,28 @@ router.post('/createClient', function(req,res) {
 
 module.exports = router;
 
-// router.get('/adminarea', function(req, res) {
-// 	var id = req.body.id;
+//working user profile route.
+// router.get('/profile/:id', function(req, res){
+// 	var id = req.params.id;
 //
 // 	var condition = "id = '" + id + "'";
-// 		user.findOne(condition, function(user){
-// 		 console.log('this is a user log', user);
 //
-// 			var hbsObject = {
-// 				logged_in: req.session.logged_in,
-// 				superAdmin: req.session.superAdmin,
-// 				regAdmin: req.session.regAdmin,
-// 				client: req.session.client,
-// 				user: user,
-// 			}
-// 			res.render('users/adminArea', hbsObject);
-// 		});
+// 	user.findOne(condition, function(user){
+// 		var hbsObject = {
+// 			logged_in: req.session.logged_in,
+// 			superAdmin: req.session.superAdmin,
+// 			regAdmin: req.session.regAdmin,
+// 			client: req.session.client,
+// 			user: user,
+// 		}
+// 			req.session.logged_in = true;
+// 			if (req.session.user_id === user.id) {
 //
-// });
-
-// var posts = db.get('posts');
-//
-// posts.find({},{},function(err, posts){
-// 	console.log('this is the long for what posts exactly is because i am not sure', posts);
-// 	res.render('users/adminArea',{
-// 			'title': 'Add Post',
-// 			'posts': posts
-// 		});
-// });
-
-//below this is the working image upload to mongo but now i need to transfer it over to mysql
-// router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
-//   // Get Form Values
-// 	var posts = db.get('posts');
-//   var title = req.body.title;
-//   var date = new Date();
-//
-//   // Check Image Upload
-//   if(req.file){
-//   	var mainimage = req.file.filename;
-//   } else {
-//   	var mainimage = 'noimage.jpg';
-//   }
-//   	// Form Validation
-// 	req.checkBody('title','Title field is required').notEmpty();
-//
-// 	// Check Errors
-// 	var errors = req.validationErrors();
-// 	if(errors){
-// 		res.render('users/sign_in',{
-// 			"errors": errors
-// 		});
-//
-// 	} else {
-// 		var posts = db.get('posts');
-// 		posts.insert({
-// 			"title": title,
-// 			"mainimage": mainimage
-// 		}, function(err, post){
-// 			if(err){
-// 				res.send(err);
+// 				res.render('users/profile', hbsObject);
 // 			} else {
-// 				res.redirect('/profile/6');
+// 				res.send('You do not belong here');
 // 			}
-// 		});
-// 	}
-// });
-
-//THIS IS THE END OF WORKING IMAGE UPLOAD IN MONGO
-
-// saved image upload orig post route
-// index.js continued
-// router.post('/addimage', multer({ dest: './uploads/'}).single('mainimage'), function(req,res){
-// 	console.log(req.body); //form fields
-// 	/* example output:
-// 	{ title: 'abc' }
-// 	 */
-// 	console.log(req.file); //form files
-// 	/* example output:
-//             { fieldname: 'upl',
-//               originalname: 'grumpy.png',
-//               encoding: '7bit',
-//               mimetype: 'image/png',
-//               destination: './uploads/',
-//               filename: '436ec561793aa4dc475a88e84776b1b9',
-//               path: 'uploads/436ec561793aa4dc475a88e84776b1b9',
-//               size: 277056 }
-// 	 */
-// 	res.status(204).end();
-// });
-//end saved image upload original post route
-
-// router.post('/addimage', multer({dest: './uploads/'}).single('mainimage'), function(req,res){
-// 	// console.log(req.body);
-// 	console.log(req.file);
-// 	console.log(req.body.title);
-// 	console.log(req.file.fieldname);
-// 	console.log(req.file.originalname);
-// 	console.log(req.file.encoding);
-// 	console.log(req.file.mimetype);
-// 	console.log(req.file.destination);
-// 	console.log(req.file.filename);
-// 	console.log(req.file.path);
-// 	console.log(req.file.size);
 //
+// 	});
 //
-//
-// 	if(req.file){
-// 		var mainimage = req.file.filename;
-// 	} else {
-// 		var mainimage = 'noimage.jpg';
-// 	}
 // });
