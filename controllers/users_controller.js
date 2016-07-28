@@ -56,21 +56,66 @@ router.get('/newClient', function(req,res) {
 });
 
 router.get('/adminarea', function(req,res){
-	var email = req.body.email;
-	var condition = "email = '" + email + "'";
-		user.findOne(condition, function(user){
+	var hbsObject = {
+		logged_in: req.session.logged_in,
+		superAdmin: req.session.superAdmin,
+		regAdmin: req.session.regAdmin,
+		client: req.session.client
+	}
 
-			console.log('inside', user);
+	var posts = db.get('posts');
+	posts.find({},{},function(err, posts){
+		// if client name is equal to req.session.user_email = user.email;
+		// if theyre equal only grab the client name that is equal to it.
+		// check out the nodeblog for when we searh by category only those show up.
+
+		console.log('after find user_email', req.session.user_email);
+		console.log(posts);
+
+		res.render('users/adminArea',{
+  			"title": 'Add Post',
+  			"posts": posts,
+				"hbsObject":hbsObject
+  		});
+	});
 });
-		// console.log('outside', ytestuser);
-		var posts = db.get('posts');
-		posts.find({},{},function(err, posts){
-			console.log(posts);
-			res.render('users/adminArea',{
-	  			"title": 'Add Post',
-	  			"posts": posts
-	  		});
+
+router.post('/commentimage', upload.single('mainimage'), function(req, res, next) {
+  // Get Form Values
+	var comments = db.get('comments');
+  var title = req.body.title;
+	var client = req.body.client;
+  var date = new Date();
+
+  // Check Image Upload
+  if(req.file){
+  	var mainimage = req.file.filename;
+  } else {
+  	var mainimage = 'noimage.jpg';
+  }
+  	// Form Validation
+	req.checkBody('title','Title field is required').notEmpty();
+
+	// Check Errors
+	var errors = req.validationErrors();
+	if(errors){
+		res.render('users/sign_in',{
+			"errors": errors
 		});
+
+	} else {
+		var comments = db.get('comments');
+		comments.insert({
+			"title": title,
+			"client": client
+		}, function(err, post){
+			if(err){
+				res.send(err);
+			} else {
+				res.redirect('/adminarea');
+			}
+		});
+	}
 });
 
 //below this is the working image upload to mongo but now i need to transfer it over to mysql
@@ -172,8 +217,8 @@ router.post('/login', function(req, res) {
 						} else if (user.role == 'client') {
 							req.session.client = true;
 						}
-						res.redirect("/profile/6");
-						// res.redirect("/adminarea");
+						// res.redirect("/profile/6");
+						res.redirect("/");
 					}else{
             res.send('You put in the wrong password.')
           }

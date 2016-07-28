@@ -2,13 +2,38 @@
 <p>this is where admins will upload their images with a specific client id that will equal the client id</p>
 <h2>this is a test</h2>
 
+
+<!-- if it is a regular user or username in this case we have to if else equal it to this page -->
 {{#each posts}}
 <ul style="list-style-type:none">
   <li>{{this.title}}</li>
   <li><img style='width:15%;'src="images/{{this.mainimage}}" alt="" /></li>
+
 </ul>
 
 {{/each}}
+
+
+<div class="profile">
+  <form method='post', action='/users/commentimage', enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="em">Title:</label>
+      <input type="text" id="ti" name="title" placeholder="Enter Title">
+    </div>
+    <div class="form-group">
+      <label for="mainimage">Main image:</label>
+      <input type="file" id="mainimage" name="mainimage">
+    </div>
+    <div class="form-group">
+      <label for="em">Client:</label>
+      <input type="text" id="client" name="client" placeholder="Enter Client Name">
+    </div>
+    <button type="submit">Post Image</button>
+  </form>
+</div>
+
+
+<h1>==========================================</h1>
 
 <div class="profile">
   <form method='post', action='/users/addimage', enctype="multipart/form-data">
