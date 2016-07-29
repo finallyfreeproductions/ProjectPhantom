@@ -1,9 +1,6 @@
 {{#if logged_in}}
   {{#if superAdmin}}
     <h1 style='text-align:center;'>Admin Image Area</h1>
-    <p>this is where admins will upload their images with a specific client id that will equal the client id</p>
-    <h2>this is a test</h2>
-
 
     <!-- if it is a regular user or username in this case we have to if else equal it to this page -->
 
@@ -29,25 +26,9 @@
       </div>
       <button type="submit">Post Image</button>
     </form>
-
-
     {{/each}}
-
     <hr style='	height: 10px;border: 0;zbox-shadow: 0 10px 10px -10px #8c8b8b inset;'>
 <h1 style='text-align:center;' role="presentation"><a href="#" data-toggle="modal" data-target="#addproject" class="whtText">Add a Project</a></h1>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 <br>
 <br>
@@ -77,7 +58,13 @@
               <div class="form-group">
                 <label for="em">Client:</label>
                 <br>
-                <input type="text" id="client" name="client" placeholder="Enter Client Name">
+                <select name='client'>
+                  <option value="jeff">Jeff</option>
+                  <option value="saj">Saj</option>
+                  <option value="boris">Boris</option>
+                  <option value="ash">Ash</option>
+                </select>
+                <!-- <input type="text" id="client" name="client" placeholder="Enter Client Name"> -->
               </div>
               <button type="submit">Post Image</button>
             </form>
@@ -94,3 +81,8 @@
 
   {{/if}}
 {{/if}}
+
+<!-- <input type="radio" name="client" value="jeff" checked>Jeff<br>
+<input type="radio" name="client" value="saj">Saj<br>
+<input type="radio" name="client" value="boris">Boris
+<br> -->
