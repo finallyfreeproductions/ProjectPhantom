@@ -55,6 +55,9 @@ router.get('/newClient', function(req,res) {
 	res.render('users/newClient');
 });
 
+//================
+//pull the images from mongo that are equal to the id of the user. and only show those.
+//================
 router.get('/adminarea', function(req,res){
 //i have to figure out the best way for the client to see their own image.
 		var posts = db.get('posts');
@@ -63,7 +66,8 @@ router.get('/adminarea', function(req,res){
 			// if theyre equal only grab the client name that is equal to it.
 			// check out the nodeblog for when we searh by category only those show up.
 			// req.session.logged_in = true;
-			// if (req.session.superAdmin) {
+			console.log('thsi is the posts log', posts);
+			if (req.session.superAdmin) {
 
 				res.render('users/adminArea',{
 		  			"title": 'Add Post',
@@ -73,9 +77,9 @@ router.get('/adminarea', function(req,res){
 						"client": req.session.client,
 		  			"posts": posts
 		  		});
-			// } else {
-				// res.send('You do not belong here');
-			// }
+			} else {
+				res.send('You do not belong here');
+			}
 
 		});
 
@@ -97,7 +101,7 @@ router.post('/addcomment', upload.single('mainimage'), function(req, res, next) 
 	if(errors){
 		var posts = db.get('posts');
 		posts.findById(postid, function(err, post){
-			res.render('show',{
+			res.render('/',{
 				"errors": errors,
 				"post": post
 			});
@@ -194,7 +198,7 @@ router.post('/login', function(req, res) {
 						} else if (user.role == 'client') {
 							req.session.client = true;
 						}
-						// res.redirect("/profile/6");
+						// res.redirect("/profile/2");
 						res.redirect("/adminarea");
 					}else{
             res.send('You put in the wrong password.')
@@ -299,8 +303,8 @@ router.post('/createClient', function(req,res) {
 });
 
 module.exports = router;
-
-//working user profile route.
+//
+// // working user profile route.
 // router.get('/profile/:id', function(req, res){
 // 	var id = req.params.id;
 //
@@ -308,11 +312,11 @@ module.exports = router;
 //
 // 	user.findOne(condition, function(user){
 // 		var hbsObject = {
-// 			logged_in: req.session.logged_in,
-// 			superAdmin: req.session.superAdmin,
-// 			regAdmin: req.session.regAdmin,
-// 			client: req.session.client,
-// 			user: user,
+			// logged_in: req.session.logged_in,
+			// superAdmin: req.session.superAdmin,
+			// regAdmin: req.session.regAdmin,
+			// client: req.session.client,
+			// user: user,
 // 		}
 // 			req.session.logged_in = true;
 // 			if (req.session.user_id === user.id) {
@@ -321,7 +325,40 @@ module.exports = router;
 // 			} else {
 // 				res.send('You do not belong here');
 // 			}
-//
 // 	});
+// });
+
+
+
+// the one profile below works except for the fact that the images don't show up but i beleive that has to do with what i am rendering
+// router.get('/profile/:id', function(req, res){
+// 	var id = req.params.id;
 //
+// 	var condition = "id = '" + id + "'";
+//
+// 	user.findOne(condition, function(user){
+// 		var posts = db.get('posts');
+// 		posts.find({},{},function(err, posts){
+// 			// if client name is equal to req.session.user_email = user.email;
+// 			// if theyre equal only grab the client name that is equal to it.
+// 			// check out the nodeblog for when we searh by category only those show up.
+// 			// req.session.logged_in = true;
+// 			req.session.logged_in = true;
+//
+// 			if (req.session.user_id === user.id) {
+//
+// 				res.render('index',{
+// 						"title": 'Add Post',
+// 						"logged_in": req.session.logged_in,
+// 						"superAdmin": req.session.superAdmin,
+// 						"regAdmin": req.session.regAdmin,
+// 						"client": req.session.client,
+// 						"posts": posts,
+// 						"user": user
+// 					});
+// 			} else {
+// 				res.send('You do not belong here');
+// 			}
+// 		});
+// 	});
 // });
