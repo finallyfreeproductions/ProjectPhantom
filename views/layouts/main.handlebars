@@ -39,10 +39,7 @@ Here is the main HTML where handlebars will render to
 										<p>i am a super admin</p>
 										<p>will be able to override stuff on regular admins</p>
 										<a href="/users/newAdmin">Add another regular admin</a><br>
-										<a href="/users/newClient">Add another client</a>
-										{{/if}}
-										{{#if regAdmin}}
-										<p>i am a reg admin and i can only do regular admin type shit</p>
+										<li role="presentation"><a href="#" data-toggle="modal" data-target="#createclient" class="whtText">add another client</a></li>
 										{{/if}}
 										{{#if client}}
 										<p>i am a client</p>
@@ -53,30 +50,62 @@ Here is the main HTML where handlebars will render to
 		    </div>
 </div>
 
-<!-- Modal Stuff -->
 <div id="sign-in" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<img src="assets/img/dailygrub.png" class="img-responsive logo" style='width:80px;'>
 			</div>
 			<div class="modal-body">
 				<div class="row">
-					<div class="col-md-12" id="sign_in">
-						<h4>Sign In</h4>
-						<form class="form center-block" action="/users/login" method="POST">
-							<div class="form-group">
-								<input type="text" class="form-control input-lg" placeholder="Email" name="email">
-							</div>
-							<div class="form-group">
-								<input type="password" class="form-control input-lg" placeholder="Password" name="password">
-							</div>
-							<div class="form-group">
-								<button class="btn btn-primary btn-lg btn-block">Sign In</button>
-							</div>
-						</form>
-					</div>
+		<div class="col-md-12" id="sign_in">
+		<h4>Sign In</h4>
+		<form class="form center-block" action="/users/login" method="POST">
+			<div class="form-group">
+				<input type="email" class="form-control input-lg" placeholder="Email" name="email">
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control input-lg" placeholder="Password" name="password">
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary btn-lg btn-block">Sign In</button>
+			</div>
+		</form>
+		<p class="blkText">
+			Not already on Fitness with Friends?
+			<a href="#" id="register_btn">Register Now</a>.
+		</p>
+		</div>
+
+		<div class="col-md-12" id="register">
+		<h4>Register</h4>
+		<form class="form center-block" action="/users/create" method="POST">
+			<div class="form-group">
+				<input type="text" class="form-control input-lg" placeholder="Full Name" name="fullname">
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control input-lg" placeholder="User Name" name="username">
+			</div>
+			<div class="form-group">
+				<input type="email" class="form-control input-lg" placeholder="Email" name="email">
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control input-lg" placeholder="Password" name="password">
+			</div>
+			<div class="form-group">
+				<input type="hidden" value='superAdmin' class="form-control input-lg" placeholder="Role" name="role">
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary btn-lg btn-block">Sign Up</button>
+			</div>
+		</form>
+		<p>
+			Already on Fitness with Friends?
+			<a href="#" id="signIn_btn">Sign In</a>.
+		</p>
+		</div>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -87,6 +116,67 @@ Here is the main HTML where handlebars will render to
 </div>
 
 
+
+<div id="createclient" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<img src="assets/img/dailygrub.png" class="img-responsive logo" style='width:80px;'>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12" id="register">
+					<h4>Register a Client</h4>
+					<form class="form center-block" action="/users/createclient" method="POST">
+						<!-- <div class="form-group">
+							<input type="text" class="form-control input-lg" placeholder="Full Name" name="fullname">
+						</div> -->
+						<div class="form-group">
+							<input type="text" class="form-control input-lg" placeholder="User Name" name="username">
+						</div>
+						<div class="form-group">
+							<input type="email" class="form-control input-lg" placeholder="Email" name="email">
+						</div>
+						<div class="form-group">
+							<input type="password" class="form-control input-lg" placeholder="Password" name="password">
+						</div>
+						<div class="form-group">
+							<input type="hidden" value='client' class="form-control input-lg" placeholder="Role" name="role">
+						</div>
+						<div class="form-group">
+							<button class="btn btn-primary btn-lg btn-block">Sign Up</button>
+						</div>
+					</form>
+					<p>
+						Already on Fitness with Friends?
+						<a href="#" id="signIn_btn">Sign In</a>.
+					</p>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 		{{{ body }}}
+		<script type="text/javascript">
+			$(document).ready(function() {
+					$("#register").hide();
+
+				$("#register_btn").click(function(){
+						$("#sign_in").hide();
+						$("#register").show();
+				});
+
+				$("#signIn_btn").click(function(){
+						$("#sign_in").show();
+						$("#register").hide();
+				});
+			});
+		</script>
 	</body>
 </HTML>

@@ -20,6 +20,7 @@
     "instagram-node": "^0.5.8",
     "method-override": "^2.3.5",
     "mongodb": "^2.2.1",
+    "mongojs": "^2.4.0",
     "monk": "^3.0.7",
     "multer": "^1.1.0",
     "mysql": "^2.10.2"

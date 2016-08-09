@@ -58,11 +58,19 @@ app.set('view engine', 'handlebars');
 // var application_controller = require('./controllers/application_controller.js');
 // var cats_controller = require('./controllers/cats_controller.js');
 var users_controller = require('./controllers/users_controller.js');
+var posts_controller = require('./controllers/posts_controller.js');
+// var profileRoutes = require('./controllers/profileRoutes.js');
 
-// app.use('/', application_controller);
+
+// app.use('/', routes);
+// app.use('/users', routes);
+// app.use('/', profileRoutes);
+// app.use('/users', profileRoutes);
+// app.use('/', posts_controller);
+app.use('/users', posts_controller);
 app.use('/', users_controller);
-// app.use('/users', users_controller);
 app.use('/users', users_controller);
+
 
 var PORT = 3000
 app.listen(PORT, function() {

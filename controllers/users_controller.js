@@ -6,12 +6,24 @@ var router = express.Router();
 var multer = require('multer');
 var upload = multer({ dest: './public/images' })
 //line 9 and 10 will be used for mongodb
-var mongo = require('mongodb');
-var db = require('monk')('localhost/projectphantom');
+// var mongo = require('mongodb');
+// var db = require('monk')('localhost/projectphantom');
 var user = require('../models/user.js');
 var image = require('../models/image.js');
 var connection = require('../config/connection.js');
 var bodyParser = require('body-parser');
+
+//new database stuff under
+
+var mongojs = require('mongojs');
+var databaseUrl = "projectphantom";
+var collections = ["users", "posts"];
+var db = mongojs(databaseUrl, collections);
+db.on('error', function(err) {
+  console.log('Database Error:', err);
+});
+
+//new database stuff over
 
 // create an admin area where the form will be. And connect it with a hidden drop down menu of numbers which will be the same number as the id of the client that you are working on... so it will be the image that will have a title and a dropdown menu in an admin area. and under each image will add comments.
 
@@ -32,15 +44,17 @@ var bodyParser = require('body-parser');
 
 
 router.get('/', function(req,res) {
-	user.all(function(data){ //grabbing .all users from the models file
-		var hbsObject = {
-			logged_in: req.session.logged_in,
-			superAdmin: req.session.superAdmin,
-			regAdmin: req.session.regAdmin,
-			client: req.session.client
-		}
-			res.render('index', hbsObject);
-	});
+	// find everything
+	db.users.find(function (err, docs) {
+	    // docs is an array of all the documents in mycollection
+			var hbsObject = {
+				logged_in: req.session.logged_in,
+				superAdmin: req.session.superAdmin,
+				regAdmin: req.session.regAdmin,
+				client: req.session.client
+			}
+				res.render('index', hbsObject);
+	})
 });
 
 router.get('/new', function(req,res) {
@@ -60,116 +74,31 @@ router.get('/newClient', function(req,res) {
 //================
 router.get('/adminarea', function(req,res){
 //i have to figure out the best way for the client to see their own image.
-		var posts = db.get('posts');
-		posts.find({},{},function(err, posts){
-			// if client name is equal to req.session.user_email = user.email;
-			// if theyre equal only grab the client name that is equal to it.
-			// check out the nodeblog for when we searh by category only those show up.
-			// req.session.logged_in = true;
-			console.log('thsi is the posts log', posts);
-			if (req.session.superAdmin) {
+	db.posts.find(function (err, docs) {
+		// if client name is equal to req.session.user_email = user.email;
+		// if theyre equal only grab the client name that is equal to it.
+		// check out the nodeblog for when we searh by category only those show up.
+		// req.session.logged_in = true;
+		if (req.session.superAdmin) {
 
-				res.render('users/adminArea',{
-		  			"title": 'Add Post',
-						"logged_in": req.session.logged_in,
-						"superAdmin": req.session.superAdmin,
-						"regAdmin": req.session.regAdmin,
-						"client": req.session.client,
-		  			"posts": posts
-		  		});
-			} else {
-				res.send('You do not belong here');
-			}
-
-		});
-
-});
-
-router.post('/addcomment', upload.single('mainimage'), function(req, res, next) {
-  // Get Form Values
-	// var posts = db.get('posts');
-	var body = req.body.body;
-	var postid= req.body.postid;
-  var commentdate = new Date();
-
-  	// Form Validation
-
-	req.checkBody('body','body field is required').notEmpty();
-
-	// Check Errors
-	var errors = req.validationErrors();
-	if(errors){
-		var posts = db.get('posts');
-		posts.findById(postid, function(err, post){
-			res.render('/',{
-				"errors": errors,
-				"post": post
-			});
-		});
-	} else {
-		var comment = {
-			"body": body,
-			"commentdate": commentdate
+			res.render('users/adminArea',{
+	  			"title": 'Add Post',
+					"logged_in": req.session.logged_in,
+					"superAdmin": req.session.superAdmin,
+					"regAdmin": req.session.regAdmin,
+					"client": req.session.client,
+	  			"docs": docs
+	  		});
+		} else {
+			res.send('You do not belong here');
 		}
-		var posts = db.get('posts');
-		posts.update({
-			"_id": postid
-		},{
-			$push:{
-				"comments": comment
-			}
-		}, function(err, doc){
-			if(err){
-				throw err;
-			} else {
-				res.redirect('/adminarea');
-			}
-		});
-	}
+
+	});
 });
 
-router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
-  // Get Form Values
-	var posts = db.get('posts');
-  var title = req.body.title;
-	var client = req.body.client;
-  var date = new Date();
 
-  // Check Image Upload
-  if(req.file){
-  	var mainimage = req.file.filename;
-  } else {
-  	var mainimage = 'noimage.jpg';
-  }
-  	// Form Validation
-	req.checkBody('title','Title field is required').notEmpty();
-
-	// Check Errors
-	var errors = req.validationErrors();
-	if(errors){
-		res.render('users/sign_in',{
-			"errors": errors
-		});
-
-	} else {
-		var posts = db.get('posts');
-		posts.insert({
-			"title": title,
-			"mainimage": mainimage,
-			"client": client
-		}, function(err, post){
-			if(err){
-				res.send(err);
-			} else {
-				res.redirect('/adminarea');
-			}
-		});
-	}
-});
 
 //THIS IS THE END OF WORKING IMAGE UPLOAD IN MONGO
-// create an admin area where the form will be. And connect it with a hidden drop down menu of numbers which will be the same number as the id of the client that you are working on... so it will be the image that will have a title and a dropdown menu in an admin area. and under each image will add comments.
-// now that i am working out of admin area. Try and get images and comments transfered over to there and get it to work that way for tomorrow.
 
 router.get('/sign-out', function(req,res) {
   req.session.destroy(function(err) {
@@ -178,132 +107,193 @@ router.get('/sign-out', function(req,res) {
 });
 
 router.post('/login', function(req, res) {
-	var email = req.body.email;
-	var condition = "email = '" + email + "'";
 
-	user.findOne(condition, function(user){
+	db.users.findOne({"email": req.body.email}, function(err, doc) {
 
-		if (user){
-			bcrypt.compare(req.body.password, user.password_hash, function(err, result) {
-					if (result == true){
+	  if (doc) {
 
-						req.session.logged_in = true;
-						req.session.user_id = user.id;
-						req.session.user_email = user.email;
+	    bcrypt.compare(req.body.password, doc.password, function(err,result) {
 
-						if (user.role == 'superAdmin') {
-							req.session.superAdmin = true;
-						} else if (user.role == 'admin') {
-							req.session.regAdmin = true;
-						} else if (user.role == 'client') {
-							req.session.client = true;
-						}
-						// res.redirect("/profile/2");
-						res.redirect("/adminarea");
-					}else{
-            res.send('You put in the wrong password.')
-          }
-			});
-		}else{
-			res.send('an account with this email does not exist - please sign up')
-		}
+	      if (result == true) {
+	        req.session.logged_in = true;
+	        req.session.user_email = doc.email;
+	        req.session.username = doc.username;
+
+	        if (doc.role == 'superAdmin') {
+	          req.session.superAdmin = true;
+						res.redirect('/adminarea');
+	        } else if (doc.role == 'admin') {
+	          req.session.regAdmin = true;
+	        } else if (doc.role == 'client') {
+	          req.session.client = true;
+						res.redirect('/profile');
+	        }
+
+
+
+	      } else {
+	        res.send('you entered the wrong password');
+	      }
+	    });
+	  }
 	});
 });
 
 //below is the create route which creates a SuperAdmin
 router.post('/create', function(req,res) {
-	var queryString = "select * from users where email = '" + req.body.email + "'";
+	db.users.find({"email": req.body.email}, function (err, docs) {
+		if (docs.length > 0) {
+			res.send('please create an account');
+		} else {
+		// docs is an array of all the documents in mycollection
+			bcrypt.genSalt(10, function(err,salt){
+				bcrypt.hash(req.body.password, salt, function(err,hash){
+					db.users.save({fullname: req.body.fullname, username: req.body.username, email: req.body.email, password: hash, role:req.body.role}, function(err, saved){
+						if (err) {
+							console.log(err);
+						} else {
+							req.session.logged_in = true;
+							req.session.username = req.body.username;
+							req.session.user_email = req.body.email;
+							// req.session.username = req.body.username;
 
-	connection.query(queryString, function(err, users) {
-
-			if (err) throw err;
-
-			if (users.length > 0){
-
-				res.send('we already have an email or username for this account');
-
-			}else{
-
-				bcrypt.genSalt(10, function(err, salt) {
-						bcrypt.hash(req.body.password, salt, function(err, hash) {
-              user.create(['username', 'email', 'role','password','password_hash'], [req.body.username, req.body.email, req.body.role, req.body.password, hash], function(user){
-
-                req.session.username = req.body.username;//we need to grab the username from the form because we don't get it back from MySQL. If we wanted to grab it, then we'd have to do another sql query but it's unnecessary since we already have it here.
-                req.session.user_email = req.body.email; //we need to grab the email from the form because we don't get it back from MySQL. If we wanted to grab it, then we'd have to do another sql query but it's unnecessary since we already have it here.
-                req.session.logged_in = true;
-                req.session.user_id = user.insertId; //the MySQL npm package returns the id of the record inserted with a key of insertId.
-                res.redirect('/');
-            	});
-						});
+							res.redirect('/');
+						}
+					});
 				});
-			}
-	});
-});
-//end of super admin create router
-
-// beginning of regular admin createAdmin Route
-router.post('/createAdmin', function(req,res) {
-	var queryString = "select * from users where email = '" + req.body.email + "'";
-
-	connection.query(queryString, function(err, users) {
-
-			if (err) throw err;
-
-			if (users.length > 0){
-
-				res.send('we already have an email or username for this account');
-
-			}else{
-
-				bcrypt.genSalt(10, function(err, salt) {
-						bcrypt.hash(req.body.password, salt, function(err, hash) {
-              user.create(['username', 'email', 'role','password','password_hash'], [req.body.username, req.body.email, req.body.role, req.body.password, hash], function(user){
-
-                req.session.username = req.body.username;//we need to grab the username from the form because we don't get it back from MySQL. If we wanted to grab it, then we'd have to do another sql query but it's unnecessary since we already have it here.
-                req.session.user_email = req.body.email; //we need to grab the email from the form because we don't get it back from MySQL. If we wanted to grab it, then we'd have to do another sql query but it's unnecessary since we already have it here.
-                req.session.logged_in = true;
-                req.session.user_id = user.insertId; //the MySQL npm package returns the id of the record inserted with a key of insertId.
-
-                res.redirect('/');
-            	});
-						});
-				});
-			}
-	});
+			});
+		}
+	})
 });
 
-router.post('/createClient', function(req,res) {
-	var queryString = "select * from users where email = '" + req.body.email + "'";
 
-	connection.query(queryString, function(err, users) {
+router.post('/createclient', function(req,res) {
+	db.users.find({"username": req.body.username}, function (err, docs) {
+    if (docs.length > 0) {
+      res.send('please create an account');
+    } else {
+    // docs is an array of all the documents in mycollection
+      bcrypt.genSalt(10, function(err,salt){
+        bcrypt.hash(req.body.password, salt, function(err,hash){
+          db.users.save({username: req.body.username, email: req.body.email, password: hash, role:req.body.role}, function(err, saved){
+            if (err) {
+              console.log(err);
+            } else {
+              req.session.logged_in = true;
+              req.session.username = req.body.username;
+              req.session.user_email = req.body.email;
+              // req.session.username = req.body.username;
 
-			if (err) throw err;
-
-			if (users.length > 0){
-
-				res.send('we already have an email or username for this account');
-
-			}else{
-
-				bcrypt.genSalt(10, function(err, salt) {
-						bcrypt.hash(req.body.password, salt, function(err, hash) {
-              user.create(['username', 'email', 'role','password','password_hash'], [req.body.username, req.body.email, req.body.role, req.body.password, hash], function(user){
-
-                req.session.username = req.body.username;//we need to grab the username from the form because we don't get it back from MySQL. If we wanted to grab it, then we'd have to do another sql query but it's unnecessary since we already have it here.
-                req.session.user_email = req.body.email; //we need to grab the email from the form because we don't get it back from MySQL. If we wanted to grab it, then we'd have to do another sql query but it's unnecessary since we already have it here.
-                req.session.logged_in = true;
-                req.session.user_id = user.insertId; //the MySQL npm package returns the id of the record inserted with a key of insertId.
-
-                res.redirect('/');
-            	});
-						});
-				});
-			}
-	});
+              res.redirect('/adminarea');
+            }
+          });
+        });
+      });
+    }
+  })
 });
 
-module.exports = router;
+router.get('/profile', function(req, res){
+  db.users.findOne({"email":req.session.user_email}, function(err, docs) {
+		db.posts.find({"client": req.session.username}, function (err, doc) {
+			// docs is an array of all the documents in mycollection
+				var hbsObject = {
+					logged_in: req.session.logged_in,
+					docs:docs,
+					doc:doc
+				}
+			res.render('users/profile', hbsObject);
+		})
+
+
+  });
+});
+
+
+
+// router.post('/addcomment', upload.single('mainimage'), function(req, res, next) {
+//   // Get Form Values
+// 	// var posts = db.get('posts');
+// 	var body = req.body.body;
+// 	var postid= req.body.postid;
+//   var commentdate = new Date();
 //
+//   	// Form Validation
+//
+// 	req.checkBody('body','body field is required').notEmpty();
+//
+// 	// Check Errors
+// 	var errors = req.validationErrors();
+// 	if(errors){
+// 		var posts = db.get('posts');
+// 		posts.findById(postid, function(err, post){
+// 			res.render('/',{
+// 				"errors": errors,
+// 				"post": post
+// 			});
+// 		});
+// 	} else {
+// 		var comment = {
+// 			"body": body,
+// 			"commentdate": commentdate
+// 		}
+// 		var posts = db.get('posts');
+// 		posts.update({
+// 			"_id": postid
+// 		},{
+// 			$push:{
+// 				"comments": comment
+// 			}
+// 		}, function(err, doc){
+// 			if(err){
+// 				throw err;
+// 			} else {
+// 				res.redirect('/adminarea');
+// 			}
+// 		});
+// 	}
+// });
+//
+// router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
+//   // Get Form Values
+// 	var posts = db.get('posts');
+//   var title = req.body.title;
+// 	var client = req.body.client;
+//   var date = new Date();
+//
+//   // Check Image Upload
+//   if(req.file){
+//   	var mainimage = req.file.filename;
+//   } else {
+//   	var mainimage = 'noimage.jpg';
+//   }
+//   	// Form Validation
+// 	req.checkBody('title','Title field is required').notEmpty();
+//
+// 	// Check Errors
+// 	var errors = req.validationErrors();
+// 	if(errors){
+// 		res.render('users/sign_in',{
+// 			"errors": errors
+// 		});
+//
+// 	} else {
+// 		var posts = db.get('posts');
+// 		posts.insert({
+// 			"title": title,
+// 			"mainimage": mainimage,
+// 			"client": client
+// 		}, function(err, post){
+// 			if(err){
+// 				res.send(err);
+// 			} else {
+// 				res.redirect('/adminarea');
+// 			}
+// 		});
+// 	}
+// });
+module.exports = router;
+
 // // working user profile route.
 // router.get('/profile/:id', function(req, res){
 // 	var id = req.params.id;

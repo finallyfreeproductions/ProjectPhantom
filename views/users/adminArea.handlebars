@@ -4,20 +4,18 @@
 
     <!-- if it is a regular user or username in this case we have to if else equal it to this page -->
 
-    {{#each posts}}
-    <ul style="list-style-type:none">
-      <li>{{this.title}}</li>
-      <li><img style='width:15%;'src="images/{{this.mainimage}}" alt="" /></li>
-    </ul>
-    <!-- need to add in loop here to go over each one and use this.body -->
+    {{#each docs}}
+      <h1>{{this.title}}</h1>
+      <ul>
+        <li><img style='width:15%;'src="images/{{this.mainimage}}" alt="" /></li>
+      </ul>
       {{#each this.comments}}
       <ul>
         <li>{{this.body}}</li>
       </ul>
 
-      {{/each}}
-
-    <form method='post', action='/users/addcomment', enctype="multipart/form-data">
+    {{/each}}
+      <form method='post', action='/users/addcomment', enctype="multipart/form-data">
       <input name='postid', type='hidden', value='{{this._id}}'>
       <div class="form-group">
         <label for="em">Body:</label>
@@ -25,7 +23,7 @@
         <input type="text" id="body" name="body" placeholder="Enter a Comment">
       </div>
       <button type="submit">Post Image</button>
-    </form>
+      </form>
     {{/each}}
     <hr style='	height: 10px;border: 0;zbox-shadow: 0 10px 10px -10px #8c8b8b inset;'>
 <h1 style='text-align:center;' role="presentation"><a href="#" data-toggle="modal" data-target="#addproject" class="whtText">Add a Project</a></h1>
@@ -63,8 +61,9 @@
                   <option value="saj">Saj</option>
                   <option value="boris">Boris</option>
                   <option value="ash">Ash</option>
+                  <option value="clientjeff">Client Jeff</option>
+                  <option value="ffp">FinallyFreeProductions</option>
                 </select>
-                <!-- <input type="text" id="client" name="client" placeholder="Enter Client Name"> -->
               </div>
               <button type="submit">Post Image</button>
             </form>
