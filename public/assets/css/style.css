@@ -303,7 +303,7 @@ ul, ol{
 
 
 .team, .works-tab, .artist_develop{
-    background:url('../img/ourteam_background.jpg') no-repeat center center;
+  background:url('/assets/images/ourteam_background.jpg') no-repeat center center;
 	background-size:cover;
 	color:white;
 }

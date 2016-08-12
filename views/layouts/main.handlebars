@@ -8,10 +8,10 @@ Here is the main HTML where handlebars will render to
 		<!-- <link rel="stylesheet" href="/assets/css/style.css" type="text/css" /> -->
 		<title>Project Phantom</title>
 		<!-- Latest compiled and minified CSS -->
-			<link rel="stylesheet" href="/assets/css/style.css">
+
 	    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> -->
 			<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
+			<link rel="stylesheet" href="/assets/css/style.css">
 	    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
@@ -59,10 +59,21 @@ Here is the main HTML where handlebars will render to
 				</div>
 			 </nav>
 		</div>
+		<div class="container artist_develop">
+		  <div class="row">
+		    <div class="col-md-4 col-md-offset-1 col-sm-6">
+		      <h1>Client Progress Update</h1>
+		    </div>
+		    <div class="col-md-7 col-sm-6">
+					<h1>{{docs.username}}</h1>
+		    </div>
+		  </div>
+		</div>
+
+		{{{body}}}
+
 		<!-- Employee Tracker -->
-		<div class="container">
 		    <!-- Jumbotron -->
-		    <div class="jumbotron" style="background-color: black; color: white">
 					<h1 class="text-center">Client Progress Management</h1>
 								<p>
 									<!-- Top Nav: -->
@@ -85,8 +96,6 @@ Here is the main HTML where handlebars will render to
 									{{/if}}
 									<!-- End of Nav: -->
 								</p>
-		    </div>
-</div>
 
 <div id="sign-in" class="modal fade" role="dialog">
 	<div class="modal-dialog">
@@ -200,7 +209,6 @@ Here is the main HTML where handlebars will render to
 		</div>
 	</div>
 </div>
-		{{{ body }}}
 		<script type="text/javascript">
 			$(document).ready(function() {
 					$("#register").hide();
