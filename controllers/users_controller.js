@@ -46,7 +46,7 @@ db.on('error', function(err) {
 router.get('/', function(req,res) {
 	// find everything
 	db.users.find(function (err, docs) {
-		console.log('user find all docs log',qdocs);
+		console.log('user find all docs log',docs);
 	    // docs is an array of all the documents in mycollection
 			var hbsObject = {
 				logged_in: req.session.logged_in,

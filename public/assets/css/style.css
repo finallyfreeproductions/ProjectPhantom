@@ -254,6 +254,15 @@ ul, ol{
 	margin:0;
 }
 
+#clientprogress {
+	font-size:40px;
+}
+
+#clientchecklist {
+	text-align: center;
+}
+
+
 .starter-template {
 	text-align: center;
 	font-family:'Open Sans';

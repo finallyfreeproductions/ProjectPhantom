@@ -1,3 +1,27 @@
+<div class="container artist_develop">
+  <div class="row">
+    <div class="col-md-4">
+      <h3>Client Progress Update</h3>
+    </div>
+    <div class="col-md-4">
+      {{#if logged_in}}
+        {{#if superAdmin}}
+          <h3><a style='color:white;' href="/users/newAdmin">Add another regular admin</a><br></h3>
+          <h3 role="presentation"><a style='color:white;'href="#" data-toggle="modal" data-target="#createclient" class="whtText">add another client</a></h3>
+        {{/if}}
+      {{/if}}
+    </div>
+    <div class="col-md-4">
+      {{#unless logged_in}}
+        <h3 role="presentation"><a style='color:white;' href="#" data-toggle="modal" data-target="#sign-in" class="whtText">Sign In</a></h3>
+      {{/unless}}
+      {{#if logged_in}}
+        <h3><a style='color:white;' href="/users/sign-out">Sign Out</a></h3>
+      {{/if}}
+    </div>
+  </div>
+</div>
+
 {{#if logged_in}}
   {{#if superAdmin}}
     <h1 style='text-align:center;'>Admin Image Area</h1>

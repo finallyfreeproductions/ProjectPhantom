@@ -1,0 +1,22 @@
+<div class="container artist_develop">
+  <div class="row">
+    <div class="col-md-4 col-sm-6">
+      <h3>Client Progress Update</h3>
+    </div>
+    <div class="col-md-4 col-sm-6">
+      <h3>{{docs.username}}</h3>
+    </div>
+    <div class="col-md-4 col-sm-6">
+      {{#unless logged_in}}
+        <h3 role="presentation"><a style='color:white;' href="#" data-toggle="modal" data-target="#sign-in" class="whtText">Sign In</a></h3>
+      {{/unless}}
+      {{#if logged_in}}
+        <h3><a style='color:white;' href="/users/sign-out">Sign Out</a></h3>
+          {{#if superAdmin}}
+            <a href="/users/newAdmin">Add another regular admin</a><br>
+            <li role="presentation"><a href="#" data-toggle="modal" data-target="#createclient" class="whtText">add another client</a></li>
+          {{/if}}
+      {{/if}}
+    </div>
+  </div>
+</div>
