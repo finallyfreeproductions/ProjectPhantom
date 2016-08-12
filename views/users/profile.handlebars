@@ -8,11 +8,8 @@
         <h3>{{docs.username}}</h3>
       </div>
       <div class="col-md-4 col-sm-6">
-        {{#unless logged_in}}
-          <h3 role="presentation"><a style='color:white;' href="#" data-toggle="modal" data-target="#sign-in" class="whtText">Sign In</a></h3>
-        {{/unless}}
         {{#if logged_in}}
-          <h3><a style='color:white;' href="/users/sign-out">Sign Out</a></h3>
+          <h3><a id='loginplease' href="/users/sign-out">Sign Out</a></h3>
             {{#if superAdmin}}
               <a href="/users/newAdmin">Add another regular admin</a><br>
               <li role="presentation"><a href="#" data-toggle="modal" data-target="#createclient" class="whtText">add another client</a></li>
@@ -21,25 +18,80 @@
       </div>
     </div>
   </div>
+
+  <div class="row main2">
   <p id='clientprogress' style='text-align:center; font-size:45px;'>Complete Package Checklist <span><img style='width:30px;'src="/assets/images/checklist_icon.png" alt="" /></span></p>
-  {{#if logged_in}}
-  {{#each doc}}
-  <ul>
-    <li>
-      {{this.title}}
-    </li>
-    <li>
-      <li><img style='width:15%;'src="images/{{this.mainimage}}" alt="" /></li>
-    </li>
-    <li>
-      {{this.client}}
-    </li>
-      {{#each this.comments}}
-      <li>
-      {{this.body}}
-      </li>
-      {{/each}}
-  </ul>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br><br>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th style='color:blue;'>Type</th>
+        <th style='color:blue;'>Date Updated</th>
+        <th style='color:blue;'>Last Reviewed</th>
+        <th style='color:blue;'>Status</th>
+        <th style='color:blue;'>Download files</th>
+        <th style='color:blue;'>Review your Project</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style='color:black'>EP Cover</td>
+        <td style='color:black'>8/1/16</td>
+        <td style='color:black'>8/2/16</td>
+        <td style='color:black'>Approved</td>
+        <td style='color:black'>Download (should be able to download the zip files here</td>
+        <td style='color:black'>Review(this is a popup modal)</td>
+      </tr>
+      <tr>
+        <td style='color:black'>Music 3 songs</td>
+        <td style='color:black'>8/1/16</td>
+        <td style='color:black'>8/2/16</td>
+        <td style='color:black'>In progress</td>
+        <td style='color:black'>Download (should be able to download the zip files here</td>
+        <td style='color:black'>Review(this is a popup modal)</td>
+      </tr>
+      <tr>
+        <td style='color:black'>Website</td>
+        <td style='color:black'>8/1/16</td>
+        <td style='color:black'>8/2/16</td>
+        <td style='color:black'>Final Draft</td>
+        <td style='color:black'>Download (should be able to download the zip files here</td>
+        <td style='color:black'>Review(this is a popup modal)</td>
+      </tr>
+      <tr>
+        <td style='color:black'>Set of Edited Photos</td>
+        <td style='color:black'>8/1/16</td>
+        <td style='color:black'>8/2/16</td>
+        <td style='color:black'>Completed</td>
+        <td style='color:black'>Download (should be able to download the zip files here</td>
+        <td style='color:black'>Review(this is a popup modal)</td>
+      </tr>
+    </tbody>
+  </table>
+
+    {{#if logged_in}}
+      {{#each doc}}
+        <ul>
+          <li>
+            {{this.title}}
+          </li>
+          <li>
+            <li><img style='width:15%;'src="images/{{this.mainimage}}" alt="" /></li>
+          </li>
+          <li>
+            {{this.client}}
+          </li>
+            {{#each this.comments}}
+          <li>
+            {{this.body}}
+          </li>
+        </ul>
+        {{/each}}
+  </div>
   <form method='post', action='/users/addcomment', enctype="multipart/form-data">
   <input name='postid', type='hidden', value='{{this._id}}'>
   <div class="form-group">
@@ -53,3 +105,7 @@
   {{/each}}
   {{/if}}
 {{/if}}
+
+{{#unless logged_in}}
+  <h3 role="presentation"><a href="#" data-toggle="modal" data-target="#sign-in" class="whtText">Sign In</a></h3>
+{{/unless}}

@@ -11,7 +11,7 @@
         <h3 role="presentation"><a style='color:white;' href="#" data-toggle="modal" data-target="#sign-in" class="whtText">Sign In</a></h3>
       {{/unless}}
       {{#if logged_in}}
-        <h3><a style='color:white;' href="/users/sign-out">Sign Out</a></h3>
+        <h3><a id='loginplease' href="/users/sign-out">Sign Out</a></h3>
           {{#if superAdmin}}
             <a href="/users/newAdmin">Add another regular admin</a><br>
             <li role="presentation"><a href="#" data-toggle="modal" data-target="#createclient" class="whtText">add another client</a></li>
