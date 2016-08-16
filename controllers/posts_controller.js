@@ -40,6 +40,7 @@ router.post('/addcomment', upload.single('mainimage'), function(req, res, next) 
 			"body": body,
 			"commentdate": commentdate
 		}
+
 		var posts = db.get('posts');
 		posts.update({
 			"_id": postid
@@ -104,3 +105,11 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
 	}
 });
 module.exports = router;
+// 
+// db.tests.update({
+// 	"user": "jeff"
+// },{
+// 	$push:{
+// 		"comments": "i am the user jeff"
+// 	}
+// }

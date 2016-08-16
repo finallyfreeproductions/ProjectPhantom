@@ -122,7 +122,7 @@ router.post('/login', function(req, res) {
 
 	        if (doc.role == 'superAdmin') {
 	          req.session.superAdmin = true;
-						res.redirect('/adminarea');
+						res.redirect('/profile');
 	        } else if (doc.role == 'admin') {
 	          req.session.regAdmin = true;
 	        } else if (doc.role == 'client') {

@@ -21,12 +21,9 @@
 
   <div class="row main2">
   <p id='clientprogress' style='text-align:center; font-size:45px;'>Complete Package Checklist <span><img style='width:30px;'src="/assets/images/checklist_icon.png" alt="" /></span></p>
-  <br>
-  <br>
-  <br>
-  <br>
   <br><br>
-  <table class="table table-hover">
+<div class="tablediv">
+  <table class="table table-hover profiletable">
     <thead>
       <tr>
         <th style='color:blue;'>Type</th>
@@ -43,35 +40,36 @@
         <td style='color:black'>8/1/16</td>
         <td style='color:black'>8/2/16</td>
         <td style='color:black'>Approved</td>
-        <td style='color:black'>Download (should be able to download the zip files here</td>
-        <td style='color:black'>Review(this is a popup modal)</td>
+        <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
+        <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
       </tr>
       <tr>
         <td style='color:black'>Music 3 songs</td>
         <td style='color:black'>8/1/16</td>
         <td style='color:black'>8/2/16</td>
         <td style='color:black'>In progress</td>
-        <td style='color:black'>Download (should be able to download the zip files here</td>
-        <td style='color:black'>Review(this is a popup modal)</td>
+        <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
+        <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
       </tr>
       <tr>
         <td style='color:black'>Website</td>
         <td style='color:black'>8/1/16</td>
         <td style='color:black'>8/2/16</td>
         <td style='color:black'>Final Draft</td>
-        <td style='color:black'>Download (should be able to download the zip files here</td>
-        <td style='color:black'>Review(this is a popup modal)</td>
+        <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
+        <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
       </tr>
       <tr>
         <td style='color:black'>Set of Edited Photos</td>
         <td style='color:black'>8/1/16</td>
         <td style='color:black'>8/2/16</td>
         <td style='color:black'>Completed</td>
-        <td style='color:black'>Download (should be able to download the zip files here</td>
-        <td style='color:black'>Review(this is a popup modal)</td>
+        <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
+        <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
       </tr>
     </tbody>
   </table>
+</div>
 
     {{#if logged_in}}
       {{#each doc}}
@@ -109,3 +107,45 @@
 {{#unless logged_in}}
   <h3 role="presentation"><a href="#" data-toggle="modal" data-target="#sign-in" class="whtText">Sign In</a></h3>
 {{/unless}}
+<div id="reviewproject" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="row">
+          <div class="col-md-6">
+            <img src="" alt="" />
+          </div>
+          <div class="col-md-6">
+            <p>Set of Edited Photos</p>
+          </div>
+        </div>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12" id="sign_in">
+            <form method='post', action='/users/addimage', enctype="multipart/form-data">
+              <div class="form-group">
+                <h4>Notes</h4>
+                <p>this is the notes placeholders {}</p>
+              </div>
+              <div class="form-group">
+                <h4>Your Comments</h4>
+                <p>this is the comments placeholders {}</p>
+              </div>
+              <div class="form-group">
+              </div>
+              <button class='btn btn-primary'type="submit">Add Comment</button>
+              <button class='btn btn-danger'type="submit">Decline</button>
+              <button class='btn btn-warning'type="submit">Approve</button>
+            </form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
