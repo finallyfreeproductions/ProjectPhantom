@@ -9,6 +9,7 @@ var user = require('../models/user.js');
 var image = require('../models/image.js');
 var connection = require('../config/connection.js');
 var bodyParser = require('body-parser');
+var dateFormat = require('dateformat');
 
 //new database stuff under
 var mongo = require('mongodb');
@@ -19,7 +20,8 @@ router.post('/addcomment', upload.single('mainimage'), function(req, res, next) 
 	// var posts = db.get('posts');
 	var body = req.body.body;
 	var postid= req.body.postid;
-  var commentdate = new Date();
+	var now = new Date();
+
 
   	// Form Validation
 
@@ -38,7 +40,7 @@ router.post('/addcomment', upload.single('mainimage'), function(req, res, next) 
 	} else {
 		var comment = {
 			"body": body,
-			"commentdate": commentdate
+			"date": dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
 		}
 
 		var posts = db.get('posts');
@@ -71,7 +73,8 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
 	var posts = db.get('posts');
   var title = req.body.title;
 	var client = req.body.client;
-  var date = new Date();
+	var now = new Date();
+
 
   // Check Image Upload
   if(req.file){
@@ -94,7 +97,8 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
 		posts.insert({
 			"title": title,
 			"mainimage": mainimage,
-			"client": client
+			"client": client,
+			"date": dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
 		}, function(err, post){
 			if(err){
 				res.send(err);
@@ -105,7 +109,7 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
 	}
 });
 module.exports = router;
-// 
+//
 // db.tests.update({
 // 	"user": "jeff"
 // },{
