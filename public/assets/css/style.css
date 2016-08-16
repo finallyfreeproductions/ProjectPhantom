@@ -274,6 +274,24 @@ ul, ol{
 	width:75%;
 	margin: 0 auto;
 }
+#reviewheadermodal {
+	background-color: black;
+}
+.headerdiv {
+	position:absolute;
+	margin-left:7%;
+}
+#reviewcameraheader {
+	width: 10%;
+	margin-left: 50%;
+}
+#revieweditedphotos {
+	color:white;
+	float:right;
+}
+.clear {
+	clear:both;
+}
 /*=============*/
 
 
