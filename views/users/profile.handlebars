@@ -95,13 +95,15 @@
                     </div>
                     <div class="form-group">
                       <h4>Notes</h4>
-                      <p>this is the admin notes placeholders {}</p>
+                      <p>this is the admin placeholders {}</p>
                     </div>
                     <div class="form-group">
                         <h4>Your Comments</h4>
                         {{#each doc}}
                           {{#each this.comments}}
-                            <p>{{this.body}}</p>
+                            <ul>
+                              <li>{{this.body}}</li>
+                            </ul>
                           {{/each}}
                         {{/each}}
 
