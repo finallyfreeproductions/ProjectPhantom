@@ -10,6 +10,11 @@ var image = require('../models/image.js');
 var connection = require('../config/connection.js');
 var bodyParser = require('body-parser');
 var dateFormat = require('dateformat');
+// ====== below this is access to upload and download zip
+var AdmZip = require('adm-zip');
+
+
+// ====== above this is access to upload and download zip
 
 //new database stuff under
 var mongo = require('mongodb');
@@ -68,6 +73,7 @@ router.post('/addcomment', upload.single('mainimage'), function(req, res, next) 
 	}
 });
 
+
 router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
   // Get Form Values
 	var posts = db.get('posts');
@@ -75,10 +81,23 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
 	var postid = req.body.postid
 	var now = new Date();
 
+	var zip = new AdmZip();
+
+	// add file directly
+	// zip.addFile("test.txt", new Buffer("inner content of the file"), "entry comment goes here");
+	// add local file
+	zip.addLocalFile("/Users/jeffyourman/Documents/ResumeV2/jeffreyimage.jpg");
+	// get everything as a buffer
+	var willSendthis = zip.toBuffer();
+	console.log('zip to buffer', willSendthis);
+	// or write everything to disk
+	// zip.writeZip("/Users/jeffyourman/Documents/files.zip");
+
 
   // Check Image Upload
   if(req.file){
   	var mainimage = req.file.filename;
+		zip.addLocalFile("/Users/jeffyourman/Documents/ResumeV2/" + mainimage);
   } else {
   	var mainimage = 'noimage.jpg';
   }
@@ -112,6 +131,7 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
 			if(err){
 				throw err;
 			} else {
+				zip.writeZip("/Users/jeffyourman/Documents/progress.zip");
 				res.redirect('/adminarea')
 			}
 		});
