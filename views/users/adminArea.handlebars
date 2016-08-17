@@ -1,7 +1,7 @@
 <div class="container artist_develop">
   <div class="row">
     <div class="col-md-4">
-      <h3>Client Progress Update</h3>
+      <h3 id='clientprogress'>Client Progress Update</h3>
     </div>
     <div class="col-md-4">
       {{#if logged_in}}
@@ -13,10 +13,10 @@
     </div>
     <div class="col-md-4">
       {{#unless logged_in}}
-        <h3 role="presentation"><a style='color:white;' href="#" data-toggle="modal" data-target="#sign-in" class="whtText">Sign In</a></h3>
+        <h3 style="font-family:'Open Sans';" role="presentation"><a style='color:white;' href="#" data-toggle="modal" data-target="#sign-in" class="whtText">Sign In</a></h3>
       {{/unless}}
       {{#if logged_in}}
-        <h3><a id='loginplease' href="/users/sign-out">Sign Out</a></h3>
+        <h3><a style="font-family:'Open Sans';" id='loginplease' href="/users/sign-out">Sign Out</a></h3>
       {{/if}}
     </div>
   </div>
@@ -37,6 +37,7 @@
             <p style='margin-left:15%;'>{{this.serviceweb}}</p>
             <p style='margin-left:15%;'>{{this.servicesocial}}</p>
             <p style='margin-left:15%;'>{{this.servicemusic}}</p>
+            <p style='margin-left:15%;'>{{this.logo}}</p>
             <h3 style='margin-left:15%;color:blue;'>Add Project</h3>
             <form style='margin-left:15%;' method='post', action='/users/addimage', enctype="multipart/form-data">
               <input name='postid', type='hidden', value='{{this._id}}'>
@@ -67,9 +68,18 @@
       <input type="text" id="ti" name="fullname" placeholder="Enter Client's Full Name">
     </div>
   <div class="form-group">
-    <label class="checkbox-inline"><input type="checkbox" name='website' value="website">Website</label>
-    <label class="checkbox-inline"><input type="checkbox" name='socialmedia' value="social_media">Social Media</label>
-    <label class="checkbox-inline"><input type="checkbox" name='musicstudio' value="music_studio">Music Studio</label>
+    <label class="checkbox-inline"><input type="checkbox" name='website' value="Website">Website</label>
+    <label class="checkbox-inline"><input type="checkbox" name='socialmedia' value="Social Media">Social Media</label>
+    <label class="checkbox-inline"><input type="checkbox" name='musicstudio' value="Music Studio">Music Studio</label>
+    <br>
+    <label class="checkbox-inline"><input type="checkbox" name='musicstudio' value="Logo">Logo</label>
+    <!-- <label class="checkbox-inline"><input type="checkbox" name='musicstudio' value="Logo">Logo</label>
+    <label class="checkbox-inline"><input type="checkbox" name='musicstudio' value="Logo">Logo</label> -->
+    <!-- <br> -->
+    <!-- <label class="checkbox-inline"><input type="checkbox" name='musicstudio' value="Logo">Logo</label>
+    <label class="checkbox-inline"><input type="checkbox" name='musicstudio' value="Logo">Logo</label>
+    <label class="checkbox-inline"><input type="checkbox" name='musicstudio' value="Logo">Logo</label> -->
+
   </div>
   <div class="form-group">
     <label for="em">Client Name:</label>

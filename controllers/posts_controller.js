@@ -81,15 +81,15 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
 	var postid = req.body.postid
 	var now = new Date();
 
-	var zip = new AdmZip();
+	// var zip = new AdmZip();
 
 	// add file directly
 	// zip.addFile("test.txt", new Buffer("inner content of the file"), "entry comment goes here");
 	// add local file
-	zip.addLocalFile("/Users/jeffyourman/Documents/ResumeV2/jeffreyimage.jpg");
-	// get everything as a buffer
-	var willSendthis = zip.toBuffer();
-	console.log('zip to buffer', willSendthis);
+	// zip.addLocalFile("/Users/jeffyourman/Documents/ResumeV2/jeffreyimage.jpg");
+	// // get everything as a buffer
+	// var willSendthis = zip.toBuffer();
+	// console.log('zip to buffer', willSendthis);
 	// or write everything to disk
 	// zip.writeZip("/Users/jeffyourman/Documents/files.zip");
 
@@ -97,7 +97,7 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
   // Check Image Upload
   if(req.file){
   	var mainimage = req.file.filename;
-		zip.addLocalFile("/Users/jeffyourman/Documents/ResumeV2/" + mainimage);
+		// zip.addLocalFile("/Users/jeffyourman/Documents/ResumeV2/" + mainimage);
   } else {
   	var mainimage = 'noimage.jpg';
   }
@@ -131,7 +131,7 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
 			if(err){
 				throw err;
 			} else {
-				zip.writeZip("/Users/jeffyourman/Documents/progress.zip");
+				// zip.writeZip("/Users/jeffyourman/Documents/progress.zip");
 				res.redirect('/adminarea')
 			}
 		});
@@ -162,6 +162,12 @@ router.post('/addclient', upload.single('mainimage'), function(req, res, next) {
 			"serviceweb": req.body.website,
 			"servicesocial": req.body.socialmedia,
 			"servicemusic": req.body.musicstudio,
+			"logo": req.body.logo,
+			"logo": req.body.logo,
+			"logo": req.body.logo,
+			"logo": req.body.logo,
+			"logo": req.body.logo,
+			"logo": req.body.logo,
 			"date": dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
 		}, function(err, post){
 			if(err){

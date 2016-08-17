@@ -9,7 +9,7 @@
       </div>
       <div class="col-md-4 col-sm-6">
         {{#if logged_in}}
-          <h3><a id='loginplease' href="/users/sign-out">Sign Out</a></h3>
+          <h3><a style="font-family:'Open Sans';" id='loginplease' href="/users/sign-out">Sign Out</a></h3>
             {{#if superAdmin}}
               <a href="/users/newAdmin">Add another regular admin</a><br>
               <li role="presentation"><a href="#" data-toggle="modal" data-target="#createclient" class="whtText">add another client</a></li>
@@ -19,10 +19,12 @@
     </div>
   </div>
 
+
   <div class="row main2">
   <p id='clientprogress' style='text-align:center; font-size:45px;'>Complete Package Checklist <span><img style='width:30px;'src="/assets/images/checklist_icon.png" alt="" /></span></p>
   <br><br>
 <div class="tablediv">
+  {{#each doc}}
   <table class="table table-hover profiletable">
     <thead>
       <tr>
@@ -36,7 +38,7 @@
     </thead>
     <tbody>
       <tr>
-        <td style='color:black'>EP Cover</td>
+        <td style='color:black'>{{this.serviceweb}}</td>
         <td style='color:black'>8/1/16</td>
         <td style='color:black'>8/2/16</td>
         <td style='color:black'>Approved</td>
@@ -44,7 +46,7 @@
         <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
       </tr>
       <tr>
-        <td style='color:black'>Music 3 songs</td>
+        <td style='color:black'>{{this.servicesocial}}</td>
         <td style='color:black'>8/1/16</td>
         <td style='color:black'>8/2/16</td>
         <td style='color:black'>In progress</td>
@@ -52,7 +54,7 @@
         <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
       </tr>
       <tr>
-        <td style='color:black'>Website</td>
+        <td style='color:black'>{{this.servicemusic}}</td>
         <td style='color:black'>8/1/16</td>
         <td style='color:black'>8/2/16</td>
         <td style='color:black'>Final Draft</td>
@@ -60,7 +62,7 @@
         <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
       </tr>
       <tr>
-        <td style='color:black'>Set of Edited Photos</td>
+        <td style='color:black'>{{this.logo}}</td>
         <td style='color:black'>8/1/16</td>
         <td style='color:black'>8/2/16</td>
         <td style='color:black'>Completed</td>
@@ -69,6 +71,7 @@
       </tr>
     </tbody>
   </table>
+  {{/each}}
 </div>
 
     {{#if logged_in}}

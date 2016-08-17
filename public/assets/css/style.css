@@ -1,4 +1,4 @@
-/*General*/
+b/*General*/
 
 html {
 	position: relative;
@@ -255,6 +255,7 @@ ul, ol{
 
 #clientprogress {
 	font-size:40px;
+	font-family:'Debby';
 }
 
 #clientchecklist {
