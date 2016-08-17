@@ -122,7 +122,7 @@ router.post('/login', function(req, res) {
 
 	        if (doc.role == 'superAdmin') {
 	          req.session.superAdmin = true;
-						res.redirect('/profile');
+						res.redirect('/adminarea');
 	        } else if (doc.role == 'admin') {
 	          req.session.regAdmin = true;
 	        } else if (doc.role == 'client') {
@@ -194,15 +194,10 @@ router.post('/createclient', function(req,res) {
   })
 });
 
+
 router.get('/profile', function(req, res){
   db.users.findOne({"email":req.session.user_email}, function(err, docs) {
-		console.log('this is the findone docs log', docs);
 		db.posts.find({"client": req.session.username}, function (err, doc) {
-
-			console.log('this is type of ',typeof doc);
-console.log(doc);
-				// var docmainimage = doc[i].mainimage;
-			// docs is an array of all the documents in mycollection
 				var hbsObject = {
 					logged_in: req.session.logged_in,
 					docs:docs,

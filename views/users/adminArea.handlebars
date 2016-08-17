@@ -29,17 +29,18 @@
     <!-- if it is a regular user or username in this case we have to if else equal it to this page -->
 
     {{#each docs}}
-      <h1>{{this.title}}</h1>
-      <ul>
-        <li><img style='width:15%;'src="images/{{this.mainimage}}" alt="" /></li>
-      </ul>
-      {{#each this.comments}}
-      <ul>
-        <li>{{this.body}}</li>
-      </ul>
+      <h1 style='text-align:center;'>{{this.client}}</h1>
+      <h2 style='text-align:center;'>{{this.title}}</h2>
+        <div class="container">
+          <button type="button" class="btn btn-info center-block" data-toggle="collapse" data-target="#demo">Show more info on client</button>
+          <div id="demo" class="collapse">
+            <p style='text-align:center;'>{{this.serviceweb}}</p>
+            <p style='text-align:center;'>{{this.servicesocial}}</p>
+            <p style='text-align:center;'>{{this.servicemusic}}</p>
+          </div>
+        </div>
 
-    {{/each}}
-      <form method='post', action='/users/addcomment', enctype="multipart/form-data">
+      <form style='text-align:center;' method='post', action='/users/addcomment', enctype="multipart/form-data">
       <input name='postid', type='hidden', value='{{this._id}}'>
       <div class="form-group">
         <label for="em">Body:</label>
@@ -50,12 +51,29 @@
       </form>
     {{/each}}
     <hr style='	height: 10px;border: 0;zbox-shadow: 0 10px 10px -10px #8c8b8b inset;'>
-<h1 style='text-align:center;' role="presentation"><a href="#" data-toggle="modal" data-target="#addproject" class="whtText">Add a Project</a></h1>
+    <h1 style='text-align:center;' role="presentation"><a href="#" data-toggle="modal" data-target="#addproject" class="whtText">Add a Project</a></h1>
 <br>
 <br>
-<br>
-<br>
-<br>
+<hr>
+<form method='post', action='/users/addclient', enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="em">Title:</label>
+    <br>
+    <input type="text" id="ti" name="title" placeholder="Enter Title">
+  </div>
+  <div class="form-group">
+    <label class="checkbox-inline"><input type="checkbox" name='website' value="website">Website</label>
+    <label class="checkbox-inline"><input type="checkbox" name='socialmedia' value="social_media">Social Media</label>
+    <label class="checkbox-inline"><input type="checkbox" name='musicstudio' value="music_studio">Music Studio</label>
+  </div>
+  <div class="form-group">
+    <label for="em">Client Name:</label>
+    <br>
+    <input style='width: 400px;' type="text" id="ti" name="clientname" placeholder="Enter Client Name: MAKE SURE IT EQUALS THEIR USERNAME">
+  </div>
+  <button type="submit">Post New Client</button>
+</form>
+<hr>
 <div id="addproject" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 		<!-- Modal content-->
@@ -109,3 +127,5 @@
 <input type="radio" name="client" value="saj">Saj<br>
 <input type="radio" name="client" value="boris">Boris
 <br> -->
+
+<!-- <li><img style='width:15%;'src="images/{{this.mainimage}}" alt="" /></li> -->

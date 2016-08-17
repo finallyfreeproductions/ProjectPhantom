@@ -72,7 +72,7 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
   // Get Form Values
 	var posts = db.get('posts');
   var title = req.body.title;
-	var client = req.body.client;
+
 	var now = new Date();
 
 
@@ -98,6 +98,39 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
 			"title": title,
 			"mainimage": mainimage,
 			"client": client,
+			"date": dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
+		}, function(err, post){
+			if(err){
+				res.send(err);
+			} else {
+				res.redirect('/adminarea');
+			}
+		});
+	}
+});
+
+router.post('/addclient', upload.single('mainimage'), function(req, res, next) {
+
+	var now = new Date();
+
+  	// Form Validation
+	req.checkBody('title','Title field is required').notEmpty();
+
+	// Check Errors
+	var errors = req.validationErrors();
+	if(errors){
+		res.render('users/profile',{
+			"errors": errors
+		});
+
+	} else {
+		var posts = db.get('posts');
+		posts.insert({
+			"title": req.body.title,
+			"client": req.body.client,
+			"serviceweb": req.body.website,
+			"servicesocial": req.body.socialmedia,
+			"servicemusic": req.body.musicstudio,
 			"date": dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
 		}, function(err, post){
 			if(err){
