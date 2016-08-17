@@ -25,6 +25,7 @@
   <br><br>
 <div class="tablediv">
   {{#each doc}}
+
   <table class="table table-hover profiletable">
     <thead>
       <tr>
@@ -39,7 +40,9 @@
     <tbody>
       <tr>
         <td style='color:black'>{{this.serviceweb}}</td>
-        <td style='color:black'>8/1/16</td>
+        {{#each this.projects}}
+        <td style='color:black'>{{this.date}}</td>
+        {{/each}}
         <td style='color:black'>8/2/16</td>
         <td style='color:black'>Approved</td>
         <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
@@ -47,23 +50,30 @@
       </tr>
       <tr>
         <td style='color:black'>{{this.servicesocial}}</td>
-        <td style='color:black'>8/1/16</td>
+        {{#each this.projects}}
+        <td style='color:black'>{{this.date}}</td>
+        {{/each}}
         <td style='color:black'>8/2/16</td>
         <td style='color:black'>In progress</td>
         <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
         <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
       </tr>
       <tr>
-        <td style='color:black'>{{this.servicemusic}}</td>
-        <td style='color:black'>8/1/16</td>
-        <td style='color:black'>8/2/16</td>
-        <td style='color:black'>Final Draft</td>
-        <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
-        <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
+
+          <td style='color:black'>{{this.servicemusic}}</td>
+          {{#each this.projects}}
+          <td style='color:black'>{{this.date}}</td>
+          {{/each}}
+          <td style='color:black'>8/2/16</td>
+          <td style='color:black'>Final Draft</td>
+          <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
+          <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
       </tr>
       <tr>
         <td style='color:black'>{{this.logo}}</td>
-        <td style='color:black'>8/1/16</td>
+        {{#each this.projects}}
+        <td style='color:black'>{{this.date}}</td>
+        {{/each}}
         <td style='color:black'>8/2/16</td>
         <td style='color:black'>Completed</td>
         <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
@@ -71,6 +81,7 @@
       </tr>
     </tbody>
   </table>
+
   {{/each}}
 </div>
 
