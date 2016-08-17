@@ -122,7 +122,7 @@ router.post('/login', function(req, res) {
 
 	        if (doc.role == 'superAdmin') {
 	          req.session.superAdmin = true;
-						res.redirect('/adminarea');
+						res.redirect('/profile');
 	        } else if (doc.role == 'admin') {
 	          req.session.regAdmin = true;
 	        } else if (doc.role == 'client') {
@@ -197,7 +197,7 @@ router.post('/createclient', function(req,res) {
 
 router.get('/profile', function(req, res){
   db.users.findOne({"email":req.session.user_email}, function(err, docs) {
-		db.posts.find({"client": req.session.username}, function (err, doc) {
+		db.posts.find({"clientname": req.session.username}, function (err, doc) {
 				var hbsObject = {
 					logged_in: req.session.logged_in,
 					docs:docs,

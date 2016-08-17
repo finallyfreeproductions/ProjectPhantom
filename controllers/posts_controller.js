@@ -71,8 +71,8 @@ router.post('/addcomment', upload.single('mainimage'), function(req, res, next) 
 router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
   // Get Form Values
 	var posts = db.get('posts');
-  var title = req.body.title;
-
+	var title = req.body.title;
+	var postid = req.body.postid
 	var now = new Date();
 
 
@@ -88,33 +88,44 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
 	// Check Errors
 	var errors = req.validationErrors();
 	if(errors){
-		res.render('users/sign_in',{
-			"errors": errors
-		});
-
-	} else {
 		var posts = db.get('posts');
-		posts.insert({
-			"title": title,
-			"mainimage": mainimage,
-			"client": client,
+		posts.findById(postid, function(err, post){
+			res.render('users/sign_in',{
+				"errors": errors,
+				"post":post
+			});
+		});
+	} else {
+		var addproject = {
+			"title" : title,
+			"mainimage" :mainimage,
 			"date": dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
-		}, function(err, post){
+		}
+		var posts = db.get('posts');
+		posts.update({
+			"_id": postid
+		},{
+			$push:{
+				"projects": addproject
+			}
+		}, function(err, doc){
 			if(err){
-				res.send(err);
+				throw err;
 			} else {
-				res.redirect('/adminarea');
+				res.redirect('/adminarea')
 			}
 		});
 	}
 });
 
 router.post('/addclient', upload.single('mainimage'), function(req, res, next) {
-
+	var fullname = req.body.fullname;
+	var clientname = req.body.clientname;
 	var now = new Date();
 
   	// Form Validation
-	req.checkBody('title','Title field is required').notEmpty();
+	req.checkBody('fullname',"client's full name is required").notEmpty();
+	req.checkBody('clientname','Client Name field is required').notEmpty();
 
 	// Check Errors
 	var errors = req.validationErrors();
@@ -126,8 +137,8 @@ router.post('/addclient', upload.single('mainimage'), function(req, res, next) {
 	} else {
 		var posts = db.get('posts');
 		posts.insert({
-			"title": req.body.title,
-			"client": req.body.client,
+			"fullname": req.body.fullname,
+			"clientname": req.body.clientname,
 			"serviceweb": req.body.website,
 			"servicesocial": req.body.socialmedia,
 			"servicemusic": req.body.musicstudio,

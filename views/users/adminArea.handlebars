@@ -29,26 +29,31 @@
     <!-- if it is a regular user or username in this case we have to if else equal it to this page -->
 
     {{#each docs}}
-      <h1 style='text-align:center;'>{{this.client}}</h1>
-      <h2 style='text-align:center;'>{{this.title}}</h2>
-        <div class="container">
-          <button type="button" class="btn btn-info center-block" data-toggle="collapse" data-target="#demo">Show more info on client</button>
-          <div id="demo" class="collapse">
-            <p style='text-align:center;'>{{this.serviceweb}}</p>
-            <p style='text-align:center;'>{{this.servicesocial}}</p>
-            <p style='text-align:center;'>{{this.servicemusic}}</p>
-          </div>
-        </div>
-
-      <form style='text-align:center;' method='post', action='/users/addcomment', enctype="multipart/form-data">
-      <input name='postid', type='hidden', value='{{this._id}}'>
-      <div class="form-group">
-        <label for="em">Body:</label>
-        <br>
-        <input type="text" id="body" name="body" placeholder="Enter a Comment">
-      </div>
-      <button type="submit">Post Image</button>
-      </form>
+      <h1 style='margin-left:15%;color:red;'>Client name: {{this.clientname}}</h1>
+        <!-- <div class="container"> -->
+          <!-- <button style='margin-left:15%;' type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Show more info on client</button> -->
+          <!-- <div id="demo" class="collapse"> -->
+          <h3 style='margin-left:15%;color:blue;'>services paid for</h3>
+            <p style='margin-left:15%;'>{{this.serviceweb}}</p>
+            <p style='margin-left:15%;'>{{this.servicesocial}}</p>
+            <p style='margin-left:15%;'>{{this.servicemusic}}</p>
+            <h3 style='margin-left:15%;color:blue;'>Add Project</h3>
+            <form style='margin-left:15%;' method='post', action='/users/addimage', enctype="multipart/form-data">
+              <input name='postid', type='hidden', value='{{this._id}}'>
+              <div class="form-group">
+                <label for="em">Title:</label>
+                <br>
+                <input type="text" id="ti" name="title" placeholder="Enter Title">
+              </div>
+              <div class="form-group">
+                <label for="mainimage">Main image:</label>
+                <input type="file" id="mainimage" name="mainimage">
+              </div>
+              <button type="submit">Post Project</button>
+            </form>
+            <hr style='background-color: #fff;border-top: 2px dashed #8c8b8b;'>
+          <!-- </div> -->
+        <!-- </div> -->
     {{/each}}
     <hr style='	height: 10px;border: 0;zbox-shadow: 0 10px 10px -10px #8c8b8b inset;'>
     <h1 style='text-align:center;' role="presentation"><a href="#" data-toggle="modal" data-target="#addproject" class="whtText">Add a Project</a></h1>
@@ -56,11 +61,11 @@
 <br>
 <hr>
 <form method='post', action='/users/addclient', enctype="multipart/form-data">
-  <div class="form-group">
-    <label for="em">Title:</label>
-    <br>
-    <input type="text" id="ti" name="title" placeholder="Enter Title">
-  </div>
+    <div class="form-group">
+      <label for="em">Client Full Name:</label>
+      <br>
+      <input type="text" id="ti" name="fullname" placeholder="Enter Client's Full Name">
+    </div>
   <div class="form-group">
     <label class="checkbox-inline"><input type="checkbox" name='website' value="website">Website</label>
     <label class="checkbox-inline"><input type="checkbox" name='socialmedia' value="social_media">Social Media</label>
@@ -85,30 +90,6 @@
 				<div class="row">
 					<div class="col-md-12" id="sign_in">
 						<h4>Add Project</h4>
-            <form method='post', action='/users/addimage', enctype="multipart/form-data">
-              <div class="form-group">
-                <label for="em">Title:</label>
-                <br>
-                <input type="text" id="ti" name="title" placeholder="Enter Title">
-              </div>
-              <div class="form-group">
-                <label for="mainimage">Main image:</label>
-                <input type="file" id="mainimage" name="mainimage">
-              </div>
-              <div class="form-group">
-                <label for="em">Client:</label>
-                <br>
-                <select name='client'>
-                  <option value="jeff">Jeff</option>
-                  <option value="saj">Saj</option>
-                  <option value="boris">Boris</option>
-                  <option value="ash">Ash</option>
-                  <option value="clientjeff">Client Jeff</option>
-                  <option value="ffp">FinallyFreeProductions</option>
-                </select>
-              </div>
-              <button type="submit">Post Image</button>
-            </form>
 					</div>
 				</div>
 			</div>
@@ -129,3 +110,14 @@
 <br> -->
 
 <!-- <li><img style='width:15%;'src="images/{{this.mainimage}}" alt="" /></li> -->
+
+
+<!-- <form style='text-align:center;' method='post', action='/users/addcomment', enctype="multipart/form-data">
+<input name='postid', type='hidden', value='{{this._id}}'>
+<div class="form-group">
+  <label for="em">Body:</label>
+  <br>
+  <input type="text" id="body" name="body" placeholder="Enter a Comment">
+</div>
+<button type="submit">Post Image</button>
+</form> -->
