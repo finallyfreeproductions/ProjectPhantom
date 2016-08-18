@@ -91,7 +91,7 @@ router.get('/adminarea', function(req,res){
 	  			"docs": docs
 	  		});
 		} else {
-			res.send('You do not belong here');
+			res.redirect('/');
 		}
 
 	});
@@ -122,8 +122,8 @@ router.post('/login', function(req, res) {
 
 	        if (doc.role == 'superAdmin') {
 	          req.session.superAdmin = true;
-						// res.redirect('/adminarea');
-						res.redirect('/profile');
+						res.redirect('/adminarea');
+						// res.redirect('/profile');
 	        } else if (doc.role == 'admin') {
 	          req.session.regAdmin = true;
 	        } else if (doc.role == 'client') {

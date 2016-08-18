@@ -78,6 +78,7 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
   // Get Form Values
 	var posts = db.get('posts');
 	var title = req.body.title;
+	var clientservices = req.body.serviceforclient;
 	var postid = req.body.postid;
 	var now = new Date();
 
@@ -118,8 +119,11 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
 		var addproject = {
 			"title" : title,
 			"mainimage" :mainimage,
+			"clientservices": clientservices,
 			"date": dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
 		}
+
+		// below use lines 79-95 in the profileroutes.js for gymapp
 		var posts = db.get('posts');
 		posts.update({
 			"_id": postid
@@ -139,8 +143,6 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
 });
 
 router.post('/addclient', upload.single('mainimage'), function(req, res, next) {
-	var fullname = req.body.fullname;
-	var clientname = req.body.clientname;
 	var now = new Date();
 
   	// Form Validation
@@ -159,7 +161,7 @@ router.post('/addclient', upload.single('mainimage'), function(req, res, next) {
 		posts.insert({
 			"fullname": req.body.fullname,
 			"clientname": req.body.clientname,
-			"services": [req.body.website,req.body.socialmedia,req.body.musicstudio,req.body.logo],
+			"services": req.body.myservices,
 			// "serviceweb": req.body.website,
 			// "servicesocial": req.body.socialmedia,
 			// "servicemusic": req.body.musicstudio,
@@ -183,3 +185,67 @@ module.exports = router;
 // 		"comments": "i am the user jeff"
 // 	}
 // }
+
+// 
+// <tr>
+//   {{#if this.servicesocial}}
+//   <td style='color:black'>{{this.servicesocial}} servicesocial</td>
+//   {{#if this.projects}}
+//   {{#each this.projects}}
+//         <td style='color:black'>{{this.date}}</td>
+//   {{/each}}
+//
+//   {{else}}
+//     <td style='color:black'>{{this.date}}</td>
+//   {{/if}}
+//     <!-- <td style='color:black'>{{this.date}}</td> -->
+//   <td style='color:black'>8/2/16</td>
+//   <td style='color:black'>Completed</td>
+//   <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
+//   <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
+//   {{/if}}
+// </tr>
+// <tr>
+//   {{#if this.servicemusic}}
+//   <td style='color:black'>{{this.servicemusic}} servicemusic</td>
+//   {{#if this.projects}}
+//   {{#each this.projects}}
+//         <td style='color:black'>{{this.date}}</td>
+//   {{/each}}
+//
+//   {{else}}
+//     <td style='color:black'>{{this.date}}</td>
+//   {{/if}}
+//     <!-- <td style='color:black'>{{this.date}}</td> -->
+//   <td style='color:black'>8/2/16</td>
+//   <td style='color:black'>Completed</td>
+//   <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
+//   <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
+//   {{/if}}
+// </tr>
+// <tr>
+//   {{#if this.logo}}
+//   <td style='color:black'>{{this.logo}} logo</td>
+//   {{#if this.projects}}
+//   {{#each this.projects}}
+//         <td style='color:black'>{{this.date}}</td>
+//   {{/each}}
+//
+//   {{else}}
+//     <td style='color:black'>{{this.date}}</td>
+//   {{/if}}
+//     <!-- <td style='color:black'>{{this.date}}</td> -->
+//   <td style='color:black'>8/2/16</td>
+//   <td style='color:black'>Completed</td>
+//   <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
+//   <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
+//   {{/if}}
+// </tr>
+//
+//
+//
+// ============
+// {{#if this.projects}}
+// {{#each this.projects}}
+// {{/each}}
+// {{else}}
