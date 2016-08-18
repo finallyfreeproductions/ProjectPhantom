@@ -78,7 +78,7 @@ router.post('/addimage', upload.single('mainimage'), function(req, res, next) {
   // Get Form Values
 	var posts = db.get('posts');
 	var title = req.body.title;
-	var postid = req.body.postid
+	var postid = req.body.postid;
 	var now = new Date();
 
 	// var zip = new AdmZip();
@@ -159,10 +159,11 @@ router.post('/addclient', upload.single('mainimage'), function(req, res, next) {
 		posts.insert({
 			"fullname": req.body.fullname,
 			"clientname": req.body.clientname,
-			"serviceweb": req.body.website,
-			"servicesocial": req.body.socialmedia,
-			"servicemusic": req.body.musicstudio,
-			"logo": req.body.logo,
+			"services": [req.body.website,req.body.socialmedia,req.body.musicstudio,req.body.logo],
+			// "serviceweb": req.body.website,
+			// "servicesocial": req.body.socialmedia,
+			// "servicemusic": req.body.musicstudio,
+			// "logo": req.body.logo,
 			"date": dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
 		}, function(err, post){
 			if(err){

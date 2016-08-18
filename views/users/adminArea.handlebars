@@ -34,10 +34,12 @@
           <!-- <button style='margin-left:15%;' type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Show more info on client</button> -->
           <!-- <div id="demo" class="collapse"> -->
           <h3 style='margin-left:15%;color:blue;'>services paid for</h3>
-            <p style='margin-left:15%;'>{{this.serviceweb}}</p>
-            <p style='margin-left:15%;'>{{this.servicesocial}}</p>
+          {{#each this.services}}
+            <p style='margin-left:15%;'>{{this}}</p>
+          {{/each}}
+            <!-- <p style='margin-left:15%;'>{{this.servicesocial}}</p>
             <p style='margin-left:15%;'>{{this.servicemusic}}</p>
-            <p style='margin-left:15%;'>{{this.logo}}</p>
+            <p style='margin-left:15%;'>{{this.logo}}</p> -->
             <h3 style='margin-left:15%;color:blue;'>Add Project</h3>
             <form style='margin-left:15%;' method='post', action='/users/addimage', enctype="multipart/form-data">
               <input name='postid', type='hidden', value='{{this._id}}'>
