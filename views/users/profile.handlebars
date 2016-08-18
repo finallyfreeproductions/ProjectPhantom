@@ -39,45 +39,76 @@
     </thead>
     <tbody>
       <tr>
-        <td style='color:black'>{{this.serviceweb}}</td>
+        {{#if this.serviceweb}}
+        <td style='color:black'>{{this.serviceweb}} serviceweb</td>
+        {{#if this.projects}}
         {{#each this.projects}}
-        <td style='color:black'>{{this.date}}</td>
+              <td style='color:black'>{{this.date}}</td>
         {{/each}}
-        <td style='color:black'>8/2/16</td>
-        <td style='color:black'>Approved</td>
-        <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
-        <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
-      </tr>
-      <tr>
-        <td style='color:black'>{{this.servicesocial}}</td>
-        {{#each this.projects}}
-        <td style='color:black'>{{this.date}}</td>
-        {{/each}}
-        <td style='color:black'>8/2/16</td>
-        <td style='color:black'>In progress</td>
-        <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
-        <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
-      </tr>
-      <tr>
 
-          <td style='color:black'>{{this.servicemusic}}</td>
-          {{#each this.projects}}
+        {{else}}
           <td style='color:black'>{{this.date}}</td>
-          {{/each}}
-          <td style='color:black'>8/2/16</td>
-          <td style='color:black'>Final Draft</td>
-          <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
-          <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
-      </tr>
-      <tr>
-        <td style='color:black'>{{this.logo}}</td>
-        {{#each this.projects}}
-        <td style='color:black'>{{this.date}}</td>
-        {{/each}}
+        {{/if}}
+          <!-- <td style='color:black'>{{this.date}}</td> -->
         <td style='color:black'>8/2/16</td>
         <td style='color:black'>Completed</td>
         <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
         <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
+        {{/if}}
+      </tr>
+      <tr>
+        {{#if this.servicesocial}}
+        <td style='color:black'>{{this.servicesocial}} servicesocial</td>
+        {{#if this.projects}}
+        {{#each this.projects}}
+              <td style='color:black'>{{this.date}}</td>
+        {{/each}}
+
+        {{else}}
+          <td style='color:black'>{{this.date}}</td>
+        {{/if}}
+          <!-- <td style='color:black'>{{this.date}}</td> -->
+        <td style='color:black'>8/2/16</td>
+        <td style='color:black'>Completed</td>
+        <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
+        <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
+        {{/if}}
+      </tr>
+      <tr>
+        {{#if this.servicemusic}}
+        <td style='color:black'>{{this.servicemusic}} servicemusic</td>
+        {{#if this.projects}}
+        {{#each this.projects}}
+              <td style='color:black'>{{this.date}}</td>
+        {{/each}}
+
+        {{else}}
+          <td style='color:black'>{{this.date}}</td>
+        {{/if}}
+          <!-- <td style='color:black'>{{this.date}}</td> -->
+        <td style='color:black'>8/2/16</td>
+        <td style='color:black'>Completed</td>
+        <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
+        <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
+        {{/if}}
+      </tr>
+      <tr>
+        {{#if this.logo}}
+        <td style='color:black'>{{this.logo}} logo</td>
+        {{#if this.projects}}
+        {{#each this.projects}}
+              <td style='color:black'>{{this.date}}</td>
+        {{/each}}
+
+        {{else}}
+          <td style='color:black'>{{this.date}}</td>
+        {{/if}}
+          <!-- <td style='color:black'>{{this.date}}</td> -->
+        <td style='color:black'>8/2/16</td>
+        <td style='color:black'>Completed</td>
+        <td style='color:black'><button class='btn btn-primary' type="button" name="downloadzip">Download</button></td>
+        <td style='color:black'><button class='btn btn-warning' type='button' role="presentation" href="#" data-toggle="modal" data-target="#reviewproject">Review</button></td>
+        {{/if}}
       </tr>
     </tbody>
   </table>

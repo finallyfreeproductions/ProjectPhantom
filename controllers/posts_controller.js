@@ -163,11 +163,6 @@ router.post('/addclient', upload.single('mainimage'), function(req, res, next) {
 			"servicesocial": req.body.socialmedia,
 			"servicemusic": req.body.musicstudio,
 			"logo": req.body.logo,
-			"logo": req.body.logo,
-			"logo": req.body.logo,
-			"logo": req.body.logo,
-			"logo": req.body.logo,
-			"logo": req.body.logo,
 			"date": dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT")
 		}, function(err, post){
 			if(err){
